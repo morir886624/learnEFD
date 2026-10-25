@@ -33,7 +33,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "mobile:android": "expo prebuild --platform android --no-install",
+    "build:apk": "expo prebuild --platform android --no-install && cd android && ./gradlew assembleRelease",
+    "build:aab": "expo prebuild --platform android --no-install && cd android && ./gradlew bundleRelease"
   },
   "private": true
 }
