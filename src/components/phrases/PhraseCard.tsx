@@ -14,7 +14,7 @@ interface PhraseCardProps {
 }
 
 export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompact = false }) => {
-  const { themeColors, favorites, toggleFavorite, settings, stats } = useApp();
+  const { themeColors, favorites, toggleFavorite, settings, stats, fontSizeDelta } = useApp();
   const isFav = favorites.includes(phrase.id);
   const isMastered = stats.masteredPhraseIds.includes(phrase.id);
 
@@ -70,7 +70,9 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompa
           </View>
           <AudioButton text={phrase.fr} lang="fr" size={17} color={themeColors.frAccent} />
         </View>
-        <Text style={[styles.mainText, { color: themeColors.textPrimary }]}>{phrase.fr}</Text>
+        <Text style={[styles.mainText, { color: themeColors.textPrimary, fontSize: 16 + fontSizeDelta, lineHeight: 22 + fontSizeDelta }]}>
+          {phrase.fr}
+        </Text>
       </View>
 
       {/* Language 2: English */}
@@ -81,7 +83,9 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompa
           </View>
           <AudioButton text={phrase.en} lang="en" size={17} color={themeColors.enAccent} />
         </View>
-        <Text style={[styles.mainText, { color: themeColors.textPrimary }]}>{phrase.en}</Text>
+        <Text style={[styles.mainText, { color: themeColors.textPrimary, fontSize: 16 + fontSizeDelta, lineHeight: 22 + fontSizeDelta }]}>
+          {phrase.en}
+        </Text>
       </View>
 
       {/* Language 3: Dari (دری) */}
@@ -105,7 +109,7 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompa
         <Text
           style={[
             styles.dariScript,
-            { color: themeColors.textPrimary },
+            { color: themeColors.textPrimary, fontSize: 21 + fontSizeDelta, lineHeight: 34 + fontSizeDelta },
           ]}
         >
           {phrase.dari}
@@ -117,7 +121,7 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompa
             <Text style={[styles.phoneticLabel, { color: themeColors.textMuted }]}>
               Prononciation :
             </Text>
-            <Text style={[styles.phoneticText, { color: themeColors.dariAccent }]}>
+            <Text style={[styles.phoneticText, { color: themeColors.dariAccent, fontSize: 13 + fontSizeDelta }]}>
               {phrase.dariPhonetic}
             </Text>
           </View>
@@ -128,7 +132,7 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, onPress, isCompa
       {!isCompact && phrase.literalOrNote && (
         <View style={[styles.noteRow, { backgroundColor: themeColors.surfaceSubtle }]}>
           <Info size={14} color={themeColors.textSecondary} style={{ marginRight: 6, marginTop: 2 }} />
-          <Text style={[styles.noteText, { color: themeColors.textSecondary }]}>
+          <Text style={[styles.noteText, { color: themeColors.textSecondary, fontSize: 12 + fontSizeDelta }]}>
             {phrase.literalOrNote}
           </Text>
         </View>

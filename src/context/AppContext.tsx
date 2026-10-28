@@ -1,19 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AppSettings, StorageService } from '../services/storage';
 import { UserStats } from '../types/phrase';
-import { colors, ThemeColors } from '../theme/colors';
+import { colors, ThemeColors, ThemeMode } from '../theme/colors';
 
 interface AppContextValue {
   settings: AppSettings;
   stats: UserStats;
   favorites: string[];
   themeColors: ThemeColors;
+  themeMode: ThemeMode;
+  fontSizeDelta: number;
   isDark: boolean;
   isLoading: boolean;
   toggleFavorite: (phraseId: string) => Promise<void>;
   markPhrase: (phraseId: string, mastered: boolean) => Promise<void>;
   recordQuizScore: (score: number) => Promise<void>;
   updateSettings: (partial: Partial<AppSettings>) => Promise<void>;
+  setThemeMode: (mode: ThemeMode) => Promise<void>;
+  setFontSizeDelta: (delta: number) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -23,6 +27,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showPhonetics: true,
     speechRate: 0.9,
     darkMode: false,
+    themeMode: 'book',
+    fontSizeDelta: 0,
   });
   const [stats, setStats] = useState<UserStats>({
     streakDays: 1,
@@ -75,8 +81,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSettings(updated);
   };
 
-  const isDark = settings.darkMode;
-  const themeColors = isDark ? colors.dark : colors.light;
+  const setThemeMode = async (mode: ThemeMode) => {
+    await updateSettings({ themeMode: mode, darkMode: mode === 'dark' });
+  };
+
+  const setFontSizeDelta = async (delta: number) => {
+    await updateSettings({ fontSizeDelta: delta });
+  };
+
+  const themeMode: ThemeMode = settings.themeMode || (settings.darkMode ? 'dark' : 'book');
+  const themeColors: ThemeColors = colors[themeMode] || colors.book;
+  const isDark = themeMode === 'dark';
+  const fontSizeDelta = settings.fontSizeDelta ?? 0;
 
   return (
     <AppContext.Provider
@@ -85,12 +101,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         stats,
         favorites,
         themeColors,
+        themeMode,
+        fontSizeDelta,
         isDark,
         isLoading,
         toggleFavorite,
         markPhrase,
         recordQuizScore,
         updateSettings,
+        setThemeMode,
+        setFontSizeDelta,
       }}
     >
       {children}

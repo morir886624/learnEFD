@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserStats } from '../types/phrase';
+import { ThemeMode } from '../theme/colors';
 
 const KEYS = {
   FAVORITES: '@learnefd_favorites',
@@ -11,12 +12,16 @@ export interface AppSettings {
   showPhonetics: boolean;
   speechRate: number;
   darkMode: boolean;
+  themeMode: ThemeMode;
+  fontSizeDelta: number;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   showPhonetics: true,
   speechRate: 0.9,
   darkMode: false,
+  themeMode: 'book',
+  fontSizeDelta: 0,
 };
 
 const DEFAULT_STATS: UserStats = {
@@ -102,7 +107,19 @@ export const StorageService = {
   async getSettings(): Promise<AppSettings> {
     try {
       const data = await AsyncStorage.getItem(KEYS.SETTINGS);
-      return data ? { ...DEFAULT_SETTINGS, ...JSON.parse(data) } : DEFAULT_SETTINGS;
+      if (!data) return DEFAULT_SETTINGS;
+      const parsed = JSON.parse(data);
+      let themeMode: ThemeMode = parsed.themeMode;
+      if (!themeMode) {
+        themeMode = parsed.darkMode ? 'dark' : 'book';
+      }
+      return {
+        ...DEFAULT_SETTINGS,
+        ...parsed,
+        themeMode,
+        darkMode: themeMode === 'dark',
+        fontSizeDelta: typeof parsed.fontSizeDelta === 'number' ? parsed.fontSizeDelta : 0,
+      };
     } catch {
       return DEFAULT_SETTINGS;
     }

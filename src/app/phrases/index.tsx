@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { BookOpen } from 'lucide-react-native';
 import { useApp } from '../../context/AppContext';
 import { useResponsive } from '../../hooks/useResponsive';
 import { PHRASES } from '../../data/phrases';
@@ -59,12 +61,30 @@ export default function PhrasesScreen() {
       >
         {/* HEADER */}
         <View style={styles.header}>
-          <Text style={[styles.title, { color: themeColors.textPrimary }]}>
-            Guide des Phrases Trilingues
-          </Text>
-          <Text style={[styles.subtitle, { color: themeColors.textSecondary }]}>
-            Français • English • دری (Dari)
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.title, { color: themeColors.textPrimary }]}>
+              Guide des Phrases Trilingues
+            </Text>
+            <Text style={[styles.subtitle, { color: themeColors.textSecondary }]}>
+              Français • English • دری (Dari)
+            </Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => router.push('/reader')}
+            style={[
+              styles.readerQuickBtn,
+              {
+                backgroundColor: themeColors.primaryLight,
+                borderColor: themeColors.primary,
+              },
+            ]}
+          >
+            <BookOpen size={16} color={themeColors.primary} />
+            <Text style={[styles.readerQuickBtnText, { color: themeColors.primary }]}>
+              Mode Livre
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* SEARCH BAR */}
@@ -75,35 +95,41 @@ export default function PhrasesScreen() {
         />
 
         {/* LEVEL FILTERS */}
-        <View style={styles.filterRow}>
-          {(['ALL', 'A1', 'A2', 'B1'] as const).map((lvl) => {
-            const isSelected = selectedLevel === lvl;
-            return (
-              <TouchableOpacity
-                key={lvl}
-                onPress={() => setSelectedLevel(lvl)}
-                activeOpacity={0.7}
-                style={[
-                  styles.levelChip,
-                  {
-                    backgroundColor: isSelected
-                      ? themeColors.primary
-                      : themeColors.surface,
-                    borderColor: isSelected ? themeColors.primary : themeColors.cardBorder,
-                  },
-                ]}
-              >
-                <Text
+        <View style={styles.filterContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterRow}
+          >
+            {(['ALL', 'A1', 'A2', 'B1'] as const).map((lvl) => {
+              const isSelected = selectedLevel === lvl;
+              return (
+                <TouchableOpacity
+                  key={lvl}
+                  onPress={() => setSelectedLevel(lvl)}
+                  activeOpacity={0.7}
                   style={[
-                    styles.levelChipText,
-                    { color: isSelected ? '#FFFFFF' : themeColors.textSecondary },
+                    styles.levelChip,
+                    {
+                      backgroundColor: isSelected
+                        ? themeColors.primary
+                        : themeColors.surface,
+                      borderColor: isSelected ? themeColors.primary : themeColors.cardBorder,
+                    },
                   ]}
                 >
-                  {lvl === 'ALL' ? 'Tous les niveaux' : `Niveau ${lvl}`}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+                  <Text
+                    style={[
+                      styles.levelChipText,
+                      { color: isSelected ? '#FFFFFF' : themeColors.textSecondary },
+                    ]}
+                  >
+                    {lvl === 'ALL' ? 'Tous les niveaux' : `Niveau ${lvl}`}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </View>
 
         {/* CATEGORY CHIPS */}
@@ -202,7 +228,23 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   header: {
-    marginBottom: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  readerQuickBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  readerQuickBtnText: {
+    fontSize: 12,
+    fontWeight: '800',
   },
   title: {
     fontSize: 22,
@@ -213,14 +255,18 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 2,
   },
+  filterContainer: {
+    flexShrink: 0,
+    marginVertical: 4,
+  },
   filterRow: {
     flexDirection: 'row',
     gap: 8,
-    marginVertical: 6,
+    paddingVertical: 2,
   },
   levelChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
   },
@@ -229,6 +275,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   categoriesContainer: {
+    flexShrink: 0,
     marginVertical: 4,
   },
   categoryScroll: {

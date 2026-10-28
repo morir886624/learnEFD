@@ -76,3 +76,4 @@ jobs:
           name: LearnEFD-Release-AAB
           path: android/app/build/outputs/bundle/release/*.aab
           retention-days: 30
+

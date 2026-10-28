@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Search, X } from 'lucide-react-native';
 import { useApp } from '../../context/AppContext';
 
@@ -15,6 +15,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = 'Rechercher en français, anglais ou dari...',
 }) => {
   const { themeColors } = useApp();
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <View
@@ -22,15 +23,26 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         styles.container,
         {
           backgroundColor: themeColors.surface,
-          borderColor: themeColors.cardBorder,
+          borderColor: isFocused ? themeColors.primary : themeColors.cardBorder,
+          borderWidth: isFocused ? 1.5 : 1,
         },
       ]}
     >
-      <Search size={18} color={themeColors.textMuted} style={styles.icon} />
+      <Search
+        size={18}
+        color={isFocused ? themeColors.primary : themeColors.textMuted}
+        style={styles.icon}
+      />
       <TextInput
-        style={[styles.input, { color: themeColors.textPrimary }]}
+        style={[
+          styles.input,
+          { color: themeColors.textPrimary },
+          Platform.select({ web: { outlineStyle: 'none' } as any }),
+        ]}
         value={value}
         onChangeText={onChangeText}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         placeholderTextColor={themeColors.textMuted}
         autoCorrect={false}

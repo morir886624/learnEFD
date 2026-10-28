@@ -16,11 +16,13 @@ import {
   Bookmark,
   TrendingUp,
   Sparkles,
+  ArrowRight,
 } from 'lucide-react-native';
 import { useApp } from '../context/AppContext';
 import { useResponsive } from '../hooks/useResponsive';
 import { PHRASES } from '../data/phrases';
 import { PhraseCard } from '../components/phrases/PhraseCard';
+import { AppLogo } from '../components/common/AppLogo';
 
 export default function HomeScreen() {
   const { themeColors, stats, favorites } = useApp();
@@ -50,11 +52,14 @@ export default function HomeScreen() {
       >
         {/* TOP BRAND HEADER */}
         <View style={styles.header}>
-          <View>
-            <Text style={[styles.appBrand, { color: themeColors.primary }]}>LearnEFD</Text>
-            <Text style={[styles.subtitle, { color: themeColors.textSecondary }]}>
-              Français • English • دری (Dari)
-            </Text>
+          <View style={styles.brandRow}>
+            <AppLogo size={52} />
+            <View>
+              <Text style={[styles.appBrand, { color: themeColors.primary }]}>LearnEFD</Text>
+              <Text style={[styles.subtitle, { color: themeColors.textSecondary }]}>
+                Français • English • دری (Dari)
+              </Text>
+            </View>
           </View>
 
           {/* Daily Streak Badge */}
@@ -116,6 +121,51 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
+
+        {/* HERO BOOK READER CARD */}
+        <TouchableOpacity
+          activeOpacity={0.88}
+          onPress={() => router.push('/reader')}
+          style={[
+            styles.bookHeroCard,
+            {
+              backgroundColor: themeColors.surface,
+              borderColor: themeColors.primary,
+            },
+          ]}
+        >
+          <View style={styles.bookHeroTopRow}>
+            <View style={[styles.bookBadgePill, { backgroundColor: themeColors.primaryLight }]}>
+              <BookOpen size={16} color={themeColors.primary} />
+              <Text style={[styles.bookBadgeText, { color: themeColors.primary }]}>
+                MODE LECTURE LIVRE
+              </Text>
+            </View>
+            <View style={[styles.streakTag, { backgroundColor: themeColors.surfaceSubtle }]}>
+              <Sparkles size={13} color={themeColors.secondary} />
+              <Text style={[styles.streakTagText, { color: themeColors.textSecondary }]}>
+                Confort & Immersion
+              </Text>
+            </View>
+          </View>
+
+          <Text style={[styles.bookHeroTitle, { color: themeColors.textPrimary }]}>
+            Lire les phrases comme dans un vrai livre
+          </Text>
+          <Text style={[styles.bookHeroDesc, { color: themeColors.textSecondary }]}>
+            Tournez les pages une à une sur papier doux ou sépia, écoutez la prononciation audio et retenez le vocabulaire à votre rythme.
+          </Text>
+
+          <View style={styles.bookHeroBottomRow}>
+            <View style={[styles.bookActionPill, { backgroundColor: themeColors.primary }]}>
+              <Text style={styles.bookActionText}>Ouvrir le livre</Text>
+              <ArrowRight size={16} color="#FFFFFF" />
+            </View>
+            <Text style={[styles.bookCountNote, { color: themeColors.textMuted }]}>
+              {PHRASES.length} phrases disponibles
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         {/* QUICK NAVIGATION TILES */}
         <Text style={[styles.sectionTitle, { color: themeColors.textPrimary }]}>
@@ -225,6 +275,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   appBrand: {
     fontSize: 26,
@@ -360,5 +415,80 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 8,
+  },
+  bookHeroCard: {
+    borderRadius: 20,
+    borderWidth: 1.5,
+    padding: 18,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  bookHeroTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  bookBadgePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  bookBadgeText: {
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  streakTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+  streakTagText: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  bookHeroTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 22,
+    marginBottom: 6,
+  },
+  bookHeroDesc: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 14,
+  },
+  bookHeroBottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bookActionPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  bookActionText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  bookCountNote: {
+    fontSize: 11,
+    fontWeight: '600',
   },
 });

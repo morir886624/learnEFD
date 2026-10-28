@@ -228,14 +228,14 @@ const styles = StyleSheet.create({
   },
   touchArea: {
     width: '100%',
-    minHeight: 330,
+    minHeight: 360,
   },
   card: {
     borderRadius: 24,
     borderWidth: 2,
     padding: 20,
     width: '100%',
-    minHeight: 330,
+    minHeight: 360,
     justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },

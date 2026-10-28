@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Home, BookOpen, Layers, Award, Bookmark, Settings as SettingsIcon } from 'lucide-react-native';
 import { AppProvider, useApp } from '../context/AppContext';
+import { CustomTabBar } from '../components/common/CustomTabBar';
 
 function TabLayout() {
   const { themeColors, isDark } = useApp();
@@ -12,21 +13,11 @@ function TabLayout() {
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Tabs
+        tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
           tabBarActiveTintColor: themeColors.primary,
-          tabBarInactiveTintColor: themeColors.textMuted,
-          tabBarStyle: {
-            backgroundColor: themeColors.tabBarBg,
-            borderTopColor: themeColors.tabBarBorder,
-            height: 62,
-            paddingBottom: 8,
-            paddingTop: 8,
-          },
-          tabBarLabelStyle: {
-            fontSize: 11,
-            fontWeight: '600',
-          },
+          tabBarInactiveTintColor: themeColors.textSecondary,
         }}
       >
         <Tabs.Screen
@@ -69,6 +60,12 @@ function TabLayout() {
           options={{
             title: 'Options',
             tabBarIcon: ({ color, size }) => <SettingsIcon size={size || 22} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="reader/index"
+          options={{
+            href: null,
           }}
         />
       </Tabs>
