@@ -1,12 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AppSettings, StorageService } from '../services/storage';
 import { UserStats } from '../types/phrase';
+import { GrammarUserProgress } from '../types/grammar';
+import { VocabularyUserProgress } from '../types/vocabulary';
 import { colors, ThemeColors, ThemeMode } from '../theme/colors';
 
 interface AppContextValue {
   settings: AppSettings;
   stats: UserStats;
   favorites: string[];
+  grammarProgress: GrammarUserProgress;
+  vocabularyProgress: VocabularyUserProgress;
   themeColors: ThemeColors;
   themeMode: ThemeMode;
   fontSizeDelta: number;
@@ -15,6 +19,10 @@ interface AppContextValue {
   toggleFavorite: (phraseId: string) => Promise<void>;
   markPhrase: (phraseId: string, mastered: boolean) => Promise<void>;
   recordQuizScore: (score: number) => Promise<void>;
+  markGrammarLessonComplete: (lessonId: string) => Promise<void>;
+  recordGrammarScore: (lessonId: string, score: number, total: number) => Promise<void>;
+  markVocabularyWord: (wordId: string, mastered: boolean) => Promise<void>;
+  recordVocabularyDeckScore: (deckId: string, score: number, total: number) => Promise<void>;
   updateSettings: (partial: Partial<AppSettings>) => Promise<void>;
   setThemeMode: (mode: ThemeMode) => Promise<void>;
   setFontSizeDelta: (delta: number) => Promise<void>;
@@ -39,19 +47,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     totalQuizzesTaken: 0,
   });
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [grammarProgress, setGrammarProgress] = useState<GrammarUserProgress>({
+    completedLessonIds: [],
+    lessonScores: {},
+    masteredRuleIds: [],
+  });
+  const [vocabularyProgress, setVocabularyProgress] = useState<VocabularyUserProgress>({
+    masteredWordIds: [],
+    reviewWordIds: [],
+    deckScores: {},
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadInitialData() {
       try {
-        const [loadedSettings, loadedStats, loadedFavorites] = await Promise.all([
-          StorageService.getSettings(),
-          StorageService.getStats(),
-          StorageService.getFavorites(),
-        ]);
+        const [loadedSettings, loadedStats, loadedFavorites, loadedGrammar, loadedVocab] =
+          await Promise.all([
+            StorageService.getSettings(),
+            StorageService.getStats(),
+            StorageService.getFavorites(),
+            StorageService.getGrammarProgress(),
+            StorageService.getVocabularyProgress(),
+          ]);
         setSettings(loadedSettings);
         setStats(loadedStats);
         setFavorites(loadedFavorites);
+        setGrammarProgress(loadedGrammar);
+        setVocabularyProgress(loadedVocab);
       } catch (e) {
         console.error('Error loading data:', e);
       } finally {
@@ -74,6 +97,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const recordQuizScore = async (score: number) => {
     const updatedStats = await StorageService.recordQuizScore(score);
     setStats(updatedStats);
+  };
+
+  const markGrammarLessonComplete = async (lessonId: string) => {
+    const updated = await StorageService.markGrammarLessonComplete(lessonId);
+    setGrammarProgress(updated);
+  };
+
+  const recordGrammarScore = async (lessonId: string, score: number, total: number) => {
+    const updated = await StorageService.recordGrammarScore(lessonId, score, total);
+    setGrammarProgress(updated);
+  };
+
+  const markVocabularyWord = async (wordId: string, mastered: boolean) => {
+    const updated = await StorageService.markVocabularyWordStatus(wordId, mastered);
+    setVocabularyProgress(updated);
+  };
+
+  const recordVocabularyDeckScore = async (deckId: string, score: number, total: number) => {
+    const updated = await StorageService.recordVocabularyDeckScore(deckId, score, total);
+    setVocabularyProgress(updated);
   };
 
   const updateSettings = async (partial: Partial<AppSettings>) => {
@@ -108,6 +151,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toggleFavorite,
         markPhrase,
         recordQuizScore,
+        grammarProgress,
+        markGrammarLessonComplete,
+        recordGrammarScore,
+        vocabularyProgress,
+        markVocabularyWord,
+        recordVocabularyDeckScore,
         updateSettings,
         setThemeMode,
         setFontSizeDelta,

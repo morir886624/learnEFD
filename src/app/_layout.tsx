@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Home, BookOpen, Layers, Award, Bookmark, Settings as SettingsIcon } from 'lucide-react-native';
+import { Home, BookOpen, Layers, Award, Bookmark, Settings as SettingsIcon, GraduationCap } from 'lucide-react-native';
 import { AppProvider, useApp } from '../context/AppContext';
 import { CustomTabBar } from '../components/common/CustomTabBar';
 
@@ -25,6 +25,13 @@ function TabLayout() {
           options={{
             title: 'Accueil',
             tabBarIcon: ({ color, size }) => <Home size={size || 22} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="grammar/index"
+          options={{
+            title: 'Grammaire',
+            tabBarIcon: ({ color, size }) => <GraduationCap size={size || 22} color={color} />,
           }}
         />
         <Tabs.Screen
@@ -60,6 +67,18 @@ function TabLayout() {
           options={{
             title: 'Options',
             tabBarIcon: ({ color, size }) => <SettingsIcon size={size || 22} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="grammar/[id]"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="vocabulary/index"
+          options={{
+            href: null,
           }}
         />
         <Tabs.Screen

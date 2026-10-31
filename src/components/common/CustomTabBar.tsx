@@ -15,6 +15,7 @@ import {
   Award,
   Bookmark,
   Settings as SettingsIcon,
+  GraduationCap,
 } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useApp } from '../../context/AppContext';
@@ -29,6 +30,7 @@ const TAB_CONFIG: Record<
   }
 > = {
   index: { label: 'Accueil', Icon: Home },
+  'grammar/index': { label: 'Grammaire', Icon: GraduationCap },
   'phrases/index': { label: 'Phrases', Icon: BookOpen },
   'flashcards/index': { label: 'Flashcards', Icon: Layers },
   'quiz/index': { label: 'Quiz', Icon: Award },
@@ -42,7 +44,7 @@ export function CustomTabBar({ state, descriptors, emitter, navigateToTab, inset
   const bottomInset = Math.max(insets?.bottom ?? 0, safeInsets.bottom, 10);
 
   const currentRoute = state.routes[state.index];
-  if (currentRoute?.name === 'reader/index') {
+  if (currentRoute?.name === 'reader/index' || currentRoute?.name === 'grammar/[id]') {
     return null;
   }
 

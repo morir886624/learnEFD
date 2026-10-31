@@ -1,11 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserStats } from '../types/phrase';
+import { GrammarUserProgress } from '../types/grammar';
+import { VocabularyUserProgress } from '../types/vocabulary';
 import { ThemeMode } from '../theme/colors';
 
 const KEYS = {
   FAVORITES: '@learnefd_favorites',
   STATS: '@learnefd_user_stats',
   SETTINGS: '@learnefd_settings',
+  GRAMMAR_PROGRESS: '@learnefd_grammar_progress',
+  VOCABULARY_PROGRESS: '@learnefd_vocabulary_progress',
+};
+
+const DEFAULT_GRAMMAR_PROGRESS: GrammarUserProgress = {
+  completedLessonIds: [],
+  lessonScores: {},
+  masteredRuleIds: [],
+};
+
+const DEFAULT_VOCABULARY_PROGRESS: VocabularyUserProgress = {
+  masteredWordIds: [],
+  reviewWordIds: [],
+  deckScores: {},
 };
 
 export interface AppSettings {
@@ -133,6 +149,92 @@ export const StorageService = {
       return updated;
     } catch {
       return DEFAULT_SETTINGS;
+    }
+  },
+
+  async getGrammarProgress(): Promise<GrammarUserProgress> {
+    try {
+      const data = await AsyncStorage.getItem(KEYS.GRAMMAR_PROGRESS);
+      return data ? JSON.parse(data) : DEFAULT_GRAMMAR_PROGRESS;
+    } catch {
+      return DEFAULT_GRAMMAR_PROGRESS;
+    }
+  },
+
+  async markGrammarLessonComplete(lessonId: string): Promise<GrammarUserProgress> {
+    try {
+      const progress = await this.getGrammarProgress();
+      if (!progress.completedLessonIds.includes(lessonId)) {
+        progress.completedLessonIds = [...progress.completedLessonIds, lessonId];
+        await AsyncStorage.setItem(KEYS.GRAMMAR_PROGRESS, JSON.stringify(progress));
+      }
+      return progress;
+    } catch {
+      return DEFAULT_GRAMMAR_PROGRESS;
+    }
+  },
+
+  async recordGrammarScore(lessonId: string, score: number, total: number): Promise<GrammarUserProgress> {
+    try {
+      const progress = await this.getGrammarProgress();
+      const today = new Date().toISOString().split('T')[0];
+      const prev = progress.lessonScores[lessonId];
+      // Keep best score or update
+      if (!prev || score >= prev.score) {
+        progress.lessonScores[lessonId] = { score, total, date: today };
+      }
+      if (!progress.completedLessonIds.includes(lessonId) && score >= Math.ceil(total * 0.7)) {
+        progress.completedLessonIds = [...progress.completedLessonIds, lessonId];
+      }
+      await AsyncStorage.setItem(KEYS.GRAMMAR_PROGRESS, JSON.stringify(progress));
+      return progress;
+    } catch {
+      return DEFAULT_GRAMMAR_PROGRESS;
+    }
+  },
+
+  async getVocabularyProgress(): Promise<VocabularyUserProgress> {
+    try {
+      const data = await AsyncStorage.getItem(KEYS.VOCABULARY_PROGRESS);
+      return data ? JSON.parse(data) : DEFAULT_VOCABULARY_PROGRESS;
+    } catch {
+      return DEFAULT_VOCABULARY_PROGRESS;
+    }
+  },
+
+  async markVocabularyWordStatus(wordId: string, mastered: boolean): Promise<VocabularyUserProgress> {
+    try {
+      const progress = await this.getVocabularyProgress();
+      if (mastered) {
+        progress.masteredWordIds = Array.from(new Set([...progress.masteredWordIds, wordId]));
+        progress.reviewWordIds = progress.reviewWordIds.filter((id) => id !== wordId);
+      } else {
+        progress.reviewWordIds = Array.from(new Set([...progress.reviewWordIds, wordId]));
+        progress.masteredWordIds = progress.masteredWordIds.filter((id) => id !== wordId);
+      }
+      await AsyncStorage.setItem(KEYS.VOCABULARY_PROGRESS, JSON.stringify(progress));
+      return progress;
+    } catch {
+      return DEFAULT_VOCABULARY_PROGRESS;
+    }
+  },
+
+  async recordVocabularyDeckScore(
+    deckId: string,
+    score: number,
+    total: number
+  ): Promise<VocabularyUserProgress> {
+    try {
+      const progress = await this.getVocabularyProgress();
+      const today = new Date().toISOString().split('T')[0];
+      const prev = progress.deckScores[deckId];
+      if (!prev || score >= prev.score) {
+        progress.deckScores[deckId] = { score, total, date: today };
+      }
+      await AsyncStorage.setItem(KEYS.VOCABULARY_PROGRESS, JSON.stringify(progress));
+      return progress;
+    } catch {
+      return DEFAULT_VOCABULARY_PROGRESS;
     }
   },
 };

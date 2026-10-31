@@ -17,15 +17,18 @@ import {
   TrendingUp,
   Sparkles,
   ArrowRight,
+  GraduationCap,
 } from 'lucide-react-native';
 import { useApp } from '../context/AppContext';
 import { useResponsive } from '../hooks/useResponsive';
 import { PHRASES } from '../data/phrases';
+import { ALL_GRAMMAR_LESSONS } from '../data/grammar';
+import { ALL_VOCABULARY_ITEMS, VOCABULARY_DECKS } from '../data/vocabulary';
 import { PhraseCard } from '../components/phrases/PhraseCard';
 import { AppLogo } from '../components/common/AppLogo';
 
 export default function HomeScreen() {
-  const { themeColors, stats, favorites } = useApp();
+  const { themeColors, stats, favorites, grammarProgress, vocabularyProgress } = useApp();
   const { isTablet, contentMaxWidth } = useResponsive();
 
   // Consistent phrase of the day initialized once on mount
@@ -122,6 +125,100 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* HERO GRAMMAR CARD (COMPLETE FRENCH GRAMMAR & ALL-IN-ONE) */}
+        <TouchableOpacity
+          activeOpacity={0.88}
+          onPress={() => router.push('/grammar')}
+          style={[
+            styles.bookHeroCard,
+            {
+              backgroundColor: themeColors.surface,
+              borderColor: '#7C3AED',
+              borderWidth: 1.5,
+              marginBottom: 14,
+            },
+          ]}
+        >
+          <View style={styles.bookHeroTopRow}>
+            <View style={[styles.bookBadgePill, { backgroundColor: '#EDE9FE' }]}>
+              <GraduationCap size={16} color="#7C3AED" />
+              <Text style={[styles.bookBadgeText, { color: '#7C3AED' }]}>
+                🇫🇷 GRAMMAIRE FRANÇAISE COMPLÈTE
+              </Text>
+            </View>
+            <View style={[styles.streakTag, { backgroundColor: themeColors.surfaceSubtle }]}>
+              <Sparkles size={13} color="#D97706" />
+              <Text style={[styles.streakTagText, { color: themeColors.textSecondary }]}>
+                2 Livres Combinés • Trilingue
+              </Text>
+            </View>
+          </View>
+
+          <Text style={[styles.bookHeroTitle, { color: themeColors.textPrimary }]}>
+            Complete French All-in-One & Complete French Grammar
+          </Text>
+          <Text style={[styles.bookHeroDesc, { color: themeColors.textSecondary }]}>
+            11 modules, 33 unités interactives (A1–B2), conjugueur 19 verbes sur 7 temps/modes, prononciation audio française et exercices corrigés.
+          </Text>
+
+          <View style={styles.bookHeroBottomRow}>
+            <View style={[styles.bookActionPill, { backgroundColor: '#7C3AED' }]}>
+              <Text style={styles.bookActionText}>Ouvrir la grammaire</Text>
+              <ArrowRight size={16} color="#FFFFFF" />
+            </View>
+            <Text style={[styles.bookCountNote, { color: themeColors.textMuted }]}>
+              {grammarProgress.completedLessonIds.length} / {33 + ALL_GRAMMAR_LESSONS.length} unités maîtrisées
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* HERO VOCABULARY & PHRASAL VERBS CARD (MURPHY & AZAR) */}
+        <TouchableOpacity
+          activeOpacity={0.88}
+          onPress={() => router.push('/vocabulary' as any)}
+          style={[
+            styles.bookHeroCard,
+            {
+              backgroundColor: themeColors.surface,
+              borderColor: '#059669',
+              borderWidth: 1.5,
+              marginBottom: 14,
+            },
+          ]}
+        >
+          <View style={styles.bookHeroTopRow}>
+            <View style={[styles.bookBadgePill, { backgroundColor: '#DCFCE7' }]}>
+              <Sparkles size={16} color="#059669" />
+              <Text style={[styles.bookBadgeText, { color: '#059669' }]}>
+                🇬🇧 VOCABULAIRE, PHRASAL VERBS & IRRÉGULIERS
+              </Text>
+            </View>
+            <View style={[styles.streakTag, { backgroundColor: themeColors.surfaceSubtle }]}>
+              <Layers size={13} color="#059669" />
+              <Text style={[styles.streakTagText, { color: themeColors.textSecondary }]}>
+                {VOCABULARY_DECKS.length} Decks • Murphy & Azar
+              </Text>
+            </View>
+          </View>
+
+          <Text style={[styles.bookHeroTitle, { color: themeColors.textPrimary }]}>
+            English Lexicon : Phrasal Verbs, V1•V2•V3 & Collocations
+          </Text>
+          <Text style={[styles.bookHeroDesc, { color: themeColors.textSecondary }]}>
+            {ALL_VOCABULARY_ITEMS.length} entrées lexicales extraites de Raymond Murphy & Betty Azar : verbes à particule, 3 formes irrégulières, prépositions fixes, paires pièges, Flashcards 3D et Quiz.
+          </Text>
+
+          <View style={styles.bookHeroBottomRow}>
+            <View style={[styles.bookActionPill, { backgroundColor: '#059669' }]}>
+              <Text style={styles.bookActionText}>Explorer le vocabulaire</Text>
+              <ArrowRight size={16} color="#FFFFFF" />
+            </View>
+            <Text style={[styles.bookCountNote, { color: themeColors.textMuted }]}>
+              {vocabularyProgress.masteredWordIds.length} / {ALL_VOCABULARY_ITEMS.length} mots maîtrisés
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         {/* HERO BOOK READER CARD */}
         <TouchableOpacity
           activeOpacity={0.88}
@@ -173,6 +270,42 @@ export default function HomeScreen() {
         </Text>
 
         <View style={[styles.grid, isTablet && styles.gridTablet]}>
+          {/* Grammaire */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => router.push('/grammar')}
+            style={[
+              styles.tile,
+              { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
+            ]}
+          >
+            <View style={[styles.tileIconCircle, { backgroundColor: '#EDE9FE' }]}>
+              <GraduationCap size={24} color="#7C3AED" />
+            </View>
+            <Text style={[styles.tileTitle, { color: themeColors.textPrimary }]}>Grammaire FR & EN</Text>
+            <Text style={[styles.tileDesc, { color: themeColors.textSecondary }]}>
+              33 unités FR Heminway + {ALL_GRAMMAR_LESSONS.length} unités EN Murphy & Azar
+            </Text>
+          </TouchableOpacity>
+
+          {/* Vocabulaire Murphy & Azar */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => router.push('/vocabulary' as any)}
+            style={[
+              styles.tile,
+              { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
+            ]}
+          >
+            <View style={[styles.tileIconCircle, { backgroundColor: '#DCFCE7' }]}>
+              <Sparkles size={24} color="#059669" />
+            </View>
+            <Text style={[styles.tileTitle, { color: themeColors.textPrimary }]}>Vocabulaire EN</Text>
+            <Text style={[styles.tileDesc, { color: themeColors.textSecondary }]}>
+              Phrasal verbs, V1•V2•V3 & prépositions ({ALL_VOCABULARY_ITEMS.length} mots)
+            </Text>
+          </TouchableOpacity>
+
           {/* Flashcards */}
           <TouchableOpacity
             activeOpacity={0.85}

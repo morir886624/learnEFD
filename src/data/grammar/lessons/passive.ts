@@ -1,0 +1,270 @@
+import { GrammarLesson } from '../../../types/grammar';
+
+export const PASSIVE_LESSONS: GrammarLesson[] = [
+  // 17. Passive Voice Form & Usage
+  {
+    id: 'lesson-passive-voice',
+    moduleId: 'mod-passive',
+    unitNumber: 17,
+    level: 'B1',
+    titleEn: 'Passive Voice Across All Tenses',
+    titleFr: 'La Voix Passive à Tous les Temps (Be + Past Participle)',
+    titleDari: 'مجهول در تمام زمان‌ها',
+    summaryEn:
+      'Learn how to shift focus from the doer of the action (agent) to the receiver or result, using appropriate forms of "be + past participle".',
+    summaryFr:
+      'Déplacez l’attention de l’auteur de l’action vers l’objet ou le résultat, grâce à la formule universelle "be + participe passé".',
+    summaryDari:
+      'انتقال توجه از فاعل به مفعول یا نتیجه کار با استفاده از be + شکل سوم فعل.',
+    sources: {
+      murphyUnits: [42, 43, 44],
+      azarChapters: [11],
+      description: 'Murphy Units 42–44; Azar Charts 11-1 to 11-3',
+    },
+    formula: {
+      affirmative: 'Object becomes Subject + BE (in tense) + Past Participle (+ by agent)',
+      negative: 'Subject + BE not + Past Participle',
+      question: 'Is/Was/Has + Subject + been + Past Participle?',
+      notesFr: 'Le verbe "be" prend le temps de la phrase active, suivi du participe passé.',
+      notesDari: 'فعل be زمان جمله را به خود می‌گیرد و پس از آن شکل سوم فعل قرار می‌گیرد.',
+    },
+    chart: {
+      title: 'Tense Transformation in Passive Voice (Azar Chart 11-1)',
+      titleFr: 'Tableau de Transformation des Temps au Passif',
+      titleDari: 'جدول تبدیل زمان‌های مختلف به حالت مجهول',
+      headers: ['Temps Actif', 'Forme Passive', 'Exemple'],
+      rows: [
+        {
+          col1: 'Present Simple',
+          col2: 'am / is / are + V3',
+          notes: 'English is spoken all over the world.',
+          notesFr: 'Le présent simple utilise is/are.',
+        },
+        {
+          col1: 'Present Continuous',
+          col2: 'am / is / are being + V3',
+          notes: 'A new bridge is being built over the river right now.',
+          notesFr: 'Notez le "being" pour l’aspect continu.',
+        },
+        {
+          col1: 'Past Simple',
+          col2: 'was / were + V3',
+          notes: 'This castle was built in 1450.',
+          notesFr: 'Événement révolu dans le passé.',
+        },
+        {
+          col1: 'Present Perfect',
+          col2: 'have / has been + V3',
+          notes: 'The letter has been sent already.',
+          notesFr: 'Lien direct avec le présent.',
+        },
+        {
+          col1: 'Modals',
+          col2: 'modal + be + V3',
+          notes: 'The rules must be respected by everyone.',
+          notesFr: 'Après un modal, on utilise "be" à l’infinitif.',
+        },
+      ],
+    },
+    rules: [
+      {
+        id: 'rp-1',
+        ruleEn: 'Only transitive verbs (verbs that take an object) can be used in the passive. Intransitive verbs (die, happen, arrive) CANNOT be passive.',
+        ruleFr: 'Seuls les verbes transitifs (avec COD) ont un passif. Les verbes intransitifs (arriver, mourir, se produire) n’ont JAMAIS de passif.',
+        ruleDari: 'فقط افعال متعدی می‌توانند مجهول شوند؛ افعال لازم مانند die یا happen شکل مجهول ندارند.',
+        exampleEn: 'An accident happened yesterday. (NOT: An accident was happened)',
+        exampleFr: 'Un accident s’est produit hier.',
+        exampleDari: 'دیروز یک حادثه رخ داد.',
+        isAlert: true,
+      },
+    ],
+    exercises: [
+      {
+        id: 'ex-17-1',
+        type: 'multiple-choice',
+        promptEn: 'Choose the correct passive form in Present Continuous:',
+        promptFr: 'Choisissez la bonne forme passive au présent continu :',
+        promptDari: 'فرم مجهول حال استمراری را انتخاب کنید:',
+        sourceRef: 'Murphy Unit 43',
+        sentence: 'The highway is closed today because it ___ repaired.',
+        options: ['is being', 'is been', 'was being', 'has being'],
+        correctAnswer: 'is being',
+        explanationEn: 'Present Continuous passive uses: is/are + being + past participle ("is being repaired").',
+        explanationFr: 'Le passif au présent continu est formé de "is/are being + participe passé".',
+        explanationDari: 'مجهول حال استمراری با is being + شکل سوم فعل ساخته می‌شود.',
+      },
+    ],
+  },
+
+  // 18. Stative Passive & Participial Adjectives
+  {
+    id: 'lesson-stative-passive',
+    moduleId: 'mod-passive',
+    unitNumber: 18,
+    level: 'B1',
+    titleEn: 'Stative Passive & Prepositions',
+    titleFr: 'Passif d’État & Prépositions Associées',
+    titleDari: 'مجهول حالتی و حروف اضافه مربوطه',
+    summaryEn:
+      'Learn the difference between an action being performed (Action Passive) and an existing state or description (Stative Passive).',
+    summaryFr:
+      'Distinguez l’action en train d’être accomplie (Passif d’action) de l’état statique résultant (Passif d’état).',
+    summaryDari:
+      'تفاوت بین انجام عمل و حالت پایدار و توصیف ناشی از آن.',
+    sources: {
+      azarChapters: [11],
+      description: 'Azar Charts 11-4, 11-5, 11-6',
+    },
+    chart: {
+      title: 'Stative Passive with Specific Prepositions (Azar Chart 11-6)',
+      titleFr: 'Les Prépositions Fixes avec le Passif d’État',
+      titleDari: 'حروف اضافه ثابت با افعال مجهول حالتی',
+      headers: ['Structure', 'Préposition', 'Exemple'],
+      rows: [
+        {
+          col1: 'interested / disappointed / involved',
+          col2: 'IN',
+          notes: 'She is deeply interested in art history.',
+          notesFr: 'Toujours "interested in", jamais with.',
+        },
+        {
+          col1: 'married / engaged / dedicated',
+          col2: 'TO',
+          notes: 'He has been married to Sarah for 10 years.',
+          notesFr: 'Toujours "married to", jamais with !',
+        },
+        {
+          col1: 'covered / crowded / filled / pleased',
+          col2: 'WITH',
+          notes: 'The mountaintop was completely covered with snow.',
+          notesFr: 'Pour le recouvrement et le remplissage.',
+        },
+        {
+          col1: 'terrified / scared / afraid / tired',
+          col2: 'OF',
+          notes: 'He is terrified of spiders.',
+          notesFr: 'Pour les sentiments de peur.',
+        },
+      ],
+    },
+    rules: [
+      {
+        id: 'rsp-1',
+        ruleEn: 'Never say "married with someone". In English, it is ALWAYS "married to someone".',
+        ruleFr: 'Ne dites jamais "married with". En anglais, on dit TOUJOURS "married to someone".',
+        ruleDari: 'هرگز نگویید married with، در انگلیسی همیشه married to است.',
+        exampleEn: 'David is married to an Italian journalist. (NOT: married with)',
+        exampleFr: 'David est marié à une journaliste italienne.',
+        exampleDari: 'دیوید با یک روزنامه‌نگار ایتالیایی ازدواج کرده است.',
+        isAlert: true,
+      },
+    ],
+    exercises: [
+      {
+        id: 'ex-18-1',
+        type: 'multiple-choice',
+        promptEn: 'Choose the correct preposition:',
+        promptFr: 'Choisissez la bonne préposition :',
+        promptDari: 'حرف اضافه صحیح را انتخاب کنید:',
+        sourceRef: 'Azar Chart 11-6',
+        sentence: 'Jessica has been married ___ Daniel for fifteen years.',
+        options: ['to', 'with', 'at', 'by'],
+        correctAnswer: 'to',
+        explanationEn: 'In English, the stative adjective "married" collocates with the preposition "to".',
+        explanationFr: 'En anglais, l’adjectif d’état "married" s’associe obligatoirement avec "to".',
+        explanationDari: 'صفت married همیشه با حرف اضافه to همراه می‌شود.',
+      },
+    ],
+  },
+
+  // 19. Causatives: Have/Get something done & Make/Let/Have/Help
+  {
+    id: 'lesson-causatives',
+    moduleId: 'mod-passive',
+    unitNumber: 19,
+    level: 'B2',
+    titleEn: 'Causatives: Have something done & Make/Let',
+    titleFr: 'Structures Causatives : Faire faire quelque chose',
+    titleDari: 'ساختارهای سببی: انجام کار توسط دیگران',
+    summaryEn:
+      'Master the structure when you arrange for someone else to do a service for you ("have my hair cut") and causative verbs (make, let, have, help, get).',
+    summaryFr:
+      'Déléguez une action à un professionnel ("have something done") et maniez les verbes causatifs (make, let, have, help, get).',
+    summaryDari:
+      'سپردن کار به دیگران برای انجام خدمات و کاربرد افعال سببی make و let.',
+    sources: {
+      murphyUnits: [46],
+      azarChapters: [11, 15],
+      description: 'Murphy Unit 46; Azar Charts 11-8, 15-7',
+    },
+    comparison: {
+      titleEn: 'I cut my hair vs I had my hair cut',
+      titleFr: 'Je l’ai fait moi-même vs J’ai payé quelqu’un pour le faire',
+      titleDari: 'خودم انجام دادم در مقابل دادم دیگری انجام داد',
+      itemA: {
+        name: 'Active (Did it yourself)',
+        form: 'Subject + past verb',
+        conceptEn: 'You performed the action with your own hands.',
+        conceptFr: 'Vous avez effectué l’action de vos propres mains avec des ciseaux.',
+        conceptDari: 'خودتان با دستان خود کار را انجام دادید.',
+        exampleEn: 'I cut my own hair in front of the bathroom mirror.',
+        exampleFr: 'Je me suis coupé les cheveux tout seul devant le miroir.',
+        exampleDari: 'خودم جلوی آینه حمام موهایم را کوتاه کردم.',
+      },
+      itemB: {
+        name: 'Causative (Arranged for service)',
+        form: 'have / get + object + past participle',
+        conceptEn: 'A professional or someone else performed the service for you.',
+        conceptFr: 'Un coiffeur ou un professionnel a réalisé le travail pour vous.',
+        conceptDari: 'یک متخصص یا آرایشگر کار را برای شما انجام داده است.',
+        exampleEn: 'I had my hair cut yesterday at the luxury salon downtown.',
+        exampleFr: 'Je me suis fait couper les cheveux hier chez le coiffeur.',
+        exampleDari: 'دیروز در آرایشگاه موهایم را کوتاه کردم (آرایشگر کوتاه کرد).',
+      },
+      keyContrastEn:
+        '"have something done" means someone else did the work for you.',
+      keyContrastFr:
+        '"have something done" signifie que vous avez fait faire le travail par un tiers.',
+      keyContrastDari:
+        'این ساختار نشان می‌دهد شخص دیگری کار را برای شما انجام داده است.',
+    },
+    rules: [
+      {
+        id: 'rcaus-1',
+        ruleEn: 'Active causatives with MAKE, LET, and HAVE take the BARE infinitive (without to): make someone do, let someone do.',
+        ruleFr: 'Les verbes causatifs actifs MAKE, LET et HAVE prennent l’infinitif SANS "to" : make someone do.',
+        ruleDari: 'بعد از make و let و have مفعول می‌آید و سپس فعل به صورت ساده بدون to قرار می‌گیرد.',
+        exampleEn: 'The coach made the players run ten laps. (NOT: made them to run)',
+        exampleFr: 'L’entraîneur a fait courir les joueurs dix tours de piste.',
+        exampleDari: 'مربی بازیکنان را وادار کرد ۱۰ دور بدوند.',
+        isAlert: true,
+      },
+      {
+        id: 'rcaus-2',
+        ruleEn: 'Unlike make/let/have, the verb GET takes the FULL infinitive with TO: "get someone TO do something".',
+        ruleFr: 'Contrairement à make/let, le verbe GET exige l’infinitif AVEC "to" : "get someone TO do something".',
+        ruleDari: 'برخلاف make و let، فعل get بعد از مفعول نیاز به to دارد: get someone TO do something.',
+        exampleEn: 'I finally got the mechanic to fix my brakes today.',
+        exampleFr: 'J’ai enfin réussi à convaincre le mécanicien de réparer mes freins.',
+        exampleDari: 'بالاخره مکانیک را راضی کردم ترمزم را تعمیر کند.',
+      },
+    ],
+    exercises: [
+      {
+        id: 'ex-19-1',
+        type: 'multiple-choice',
+        promptEn: 'Choose the correct causative form:',
+        promptFr: 'Choisissez la bonne forme causative :',
+        promptDari: 'فرم سببی مناسب را انتخاب کنید:',
+        sourceRef: 'Murphy Unit 46',
+        sentence: 'My laptop was infected with a virus, so I ___ by an IT specialist.',
+        options: ['had it cleaned', 'had cleaned it', 'cleaned it', 'have it clean'],
+        correctAnswer: 'had it cleaned',
+        explanationEn: 'Structure: had + object (it) + past participle (cleaned).',
+        explanationFr: 'Structure causative : had + objet (it) + participe passé (cleaned).',
+        explanationDari: 'فرمول سببی: had + مفعول + شکل سوم فعل.',
+      },
+    ],
+  },
+];
+
