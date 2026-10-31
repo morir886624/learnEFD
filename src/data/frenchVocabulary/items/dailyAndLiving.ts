@@ -473,3 +473,4 @@ export const DAILY_AND_LIVING_VOCABULARY: FrenchVocabularyItem[] = [
     sourceRef: 'All-in-One Ch. 5 • p. 127',
   },
 ];
+

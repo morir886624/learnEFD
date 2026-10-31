@@ -317,3 +317,4 @@ export const TRAVEL_WORK_TECH_VOCABULARY: FrenchVocabularyItem[] = [
     sourceRef: 'All-in-One Ch. 5 • p. 120',
   },
 ];
+

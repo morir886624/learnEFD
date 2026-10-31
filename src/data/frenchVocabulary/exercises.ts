@@ -289,3 +289,4 @@ export const FRENCH_VOCABULARY_EXERCISES: FrenchVocabularyExercise[] = [
     sourceRef: 'All-in-One Ch. 34 • p. 496',
   },
 ];
+

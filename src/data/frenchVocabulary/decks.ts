@@ -134,3 +134,4 @@ export const FRENCH_VOCABULARY_DECKS: FrenchVocabularyDeck[] = [
     iconName: 'Sparkles',
   },
 ];
+
