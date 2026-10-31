@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ArrowLeft,
+  ArrowRight,
   BookOpen,
   Volume2,
   CircleCheck,
@@ -20,7 +21,7 @@ import {
 import * as Haptics from 'expo-haptics';
 import { useApp } from '../../context/AppContext';
 import { useResponsive } from '../../hooks/useResponsive';
-import { getLessonById } from '../../data/grammar';
+import { getLessonById, ALL_GRAMMAR_LESSONS } from '../../data/grammar';
 import { getFrenchLessonById } from '../../data/frenchGrammar';
 import { GrammarTimeline } from '../../components/grammar/GrammarTimeline';
 import { GrammarComparison } from '../../components/grammar/GrammarComparison';
@@ -66,6 +67,12 @@ export default function GrammarLessonScreen() {
   }
 
   const isCompleted = grammarProgress.completedLessonIds.includes(lesson.id);
+  const currentLessonIdx = ALL_GRAMMAR_LESSONS.findIndex((l) => l.id === lesson.id);
+  const prevLesson = currentLessonIdx > 0 ? ALL_GRAMMAR_LESSONS[currentLessonIdx - 1] : null;
+  const nextLesson =
+    currentLessonIdx >= 0 && currentLessonIdx < ALL_GRAMMAR_LESSONS.length - 1
+      ? ALL_GRAMMAR_LESSONS[currentLessonIdx + 1]
+      : null;
 
   const handleTabSwitch = (tab: ActiveTab) => {
     try {
@@ -545,6 +552,64 @@ export default function GrammarLessonScreen() {
                 {isCompleted ? 'Leçon validée dans votre profil' : 'Marquer comme comprise'}
               </Text>
             </TouchableOpacity>
+
+            {/* Previous / Next Unit Navigation + Vocabulary Link */}
+            <View style={styles.unitNavRow}>
+              <TouchableOpacity
+                disabled={!prevLesson}
+                onPress={() => prevLesson && router.replace(`/grammar/${prevLesson.id}`)}
+                style={[
+                  styles.unitNavBtn,
+                  {
+                    backgroundColor: themeColors.surface,
+                    borderColor: themeColors.cardBorder,
+                    opacity: prevLesson ? 1 : 0.4,
+                  },
+                ]}
+              >
+                <ArrowLeft size={16} color={themeColors.textPrimary} />
+                <Text
+                  numberOfLines={1}
+                  style={[styles.unitNavText, { color: themeColors.textPrimary }]}
+                >
+                  {prevLesson ? `Unité ${prevLesson.unitNumber}` : 'Début'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => router.push('/vocabulary' as any)}
+                style={[
+                  styles.unitNavBtn,
+                  { backgroundColor: '#ECFDF5', borderColor: '#6EE7B7' },
+                ]}
+              >
+                <Sparkles size={15} color="#059669" />
+                <Text style={[styles.unitNavText, { color: '#059669' }]}>
+                  Vocabulaire
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                disabled={!nextLesson}
+                onPress={() => nextLesson && router.replace(`/grammar/${nextLesson.id}`)}
+                style={[
+                  styles.unitNavBtn,
+                  {
+                    backgroundColor: themeColors.surface,
+                    borderColor: themeColors.cardBorder,
+                    opacity: nextLesson ? 1 : 0.4,
+                  },
+                ]}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={[styles.unitNavText, { color: themeColors.textPrimary }]}
+                >
+                  {nextLesson ? `Unité ${nextLesson.unitNumber}` : 'Fin'}
+                </Text>
+                <ArrowRight size={16} color={themeColors.textPrimary} />
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           /* TAB 2: INTERACTIVE PRACTICE DRILLS */
@@ -928,6 +993,28 @@ const styles = StyleSheet.create({
   },
   markCompleteText: {
     fontSize: 13.5,
+    fontWeight: '700',
+  },
+  unitNavRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    marginTop: 6,
+  },
+  unitNavBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  unitNavText: {
+    fontSize: 12.5,
     fontWeight: '700',
   },
 });

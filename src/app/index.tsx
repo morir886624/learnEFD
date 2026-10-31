@@ -24,6 +24,10 @@ import { useResponsive } from '../hooks/useResponsive';
 import { PHRASES } from '../data/phrases';
 import { ALL_GRAMMAR_LESSONS } from '../data/grammar';
 import { ALL_VOCABULARY_ITEMS, VOCABULARY_DECKS } from '../data/vocabulary';
+import {
+  ALL_FRENCH_VOCABULARY_ITEMS,
+  FRENCH_VOCABULARY_DECKS,
+} from '../data/frenchVocabulary';
 import { PhraseCard } from '../components/phrases/PhraseCard';
 import { AppLogo } from '../components/common/AppLogo';
 
@@ -190,22 +194,22 @@ export default function HomeScreen() {
             <View style={[styles.bookBadgePill, { backgroundColor: '#DCFCE7' }]}>
               <Sparkles size={16} color="#059669" />
               <Text style={[styles.bookBadgeText, { color: '#059669' }]}>
-                🇬🇧 VOCABULAIRE, PHRASAL VERBS & IRRÉGULIERS
+                🇫🇷 STUDIO VOCABULAIRE & FAUX AMIS 🇬🇧
               </Text>
             </View>
             <View style={[styles.streakTag, { backgroundColor: themeColors.surfaceSubtle }]}>
               <Layers size={13} color="#059669" />
               <Text style={[styles.streakTagText, { color: themeColors.textSecondary }]}>
-                {VOCABULARY_DECKS.length} Decks • Murphy & Azar
+                {FRENCH_VOCABULARY_DECKS.length + VOCABULARY_DECKS.length} Decks • Heminway, Murphy & Azar
               </Text>
             </View>
           </View>
 
           <Text style={[styles.bookHeroTitle, { color: themeColors.textPrimary }]}>
-            English Lexicon : Phrasal Verbs, V1•V2•V3 & Collocations
+            Vocabulaire Thématique, Faux Amis & Phrasal Verbs
           </Text>
           <Text style={[styles.bookHeroDesc, { color: themeColors.textSecondary }]}>
-            {ALL_VOCABULARY_ITEMS.length} entrées lexicales extraites de Raymond Murphy & Betty Azar : verbes à particule, 3 formes irrégulières, prépositions fixes, paires pièges, Flashcards 3D et Quiz.
+            {ALL_FRENCH_VOCABULARY_ITEMS.length + ALL_VOCABULARY_ITEMS.length} fiches lexicales trilingues (Français • English • دری) : transitions, prépositions verbales (à/de), faux amis, expressions idiomatiques, Flashcards 3D et Quiz.
           </Text>
 
           <View style={styles.bookHeroBottomRow}>
@@ -214,7 +218,7 @@ export default function HomeScreen() {
               <ArrowRight size={16} color="#FFFFFF" />
             </View>
             <Text style={[styles.bookCountNote, { color: themeColors.textMuted }]}>
-              {vocabularyProgress.masteredWordIds.length} / {ALL_VOCABULARY_ITEMS.length} mots maîtrisés
+              {vocabularyProgress.masteredWordIds.length} mots maîtrisés
             </Text>
           </View>
         </TouchableOpacity>
@@ -288,7 +292,7 @@ export default function HomeScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* Vocabulaire Murphy & Azar */}
+          {/* Studio Vocabulaire */}
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={() => router.push('/vocabulary' as any)}
@@ -300,9 +304,9 @@ export default function HomeScreen() {
             <View style={[styles.tileIconCircle, { backgroundColor: '#DCFCE7' }]}>
               <Sparkles size={24} color="#059669" />
             </View>
-            <Text style={[styles.tileTitle, { color: themeColors.textPrimary }]}>Vocabulaire EN</Text>
+            <Text style={[styles.tileTitle, { color: themeColors.textPrimary }]}>Studio Vocabulaire</Text>
             <Text style={[styles.tileDesc, { color: themeColors.textSecondary }]}>
-              Phrasal verbs, V1•V2•V3 & prépositions ({ALL_VOCABULARY_ITEMS.length} mots)
+              🇫🇷 Heminway & 🇬🇧 Murphy ({ALL_FRENCH_VOCABULARY_ITEMS.length + ALL_VOCABULARY_ITEMS.length} mots, 3D cards, Quiz)
             </Text>
           </TouchableOpacity>
 

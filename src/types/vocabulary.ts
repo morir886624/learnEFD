@@ -83,3 +83,4 @@ export interface VocabularyUserProgress {
   reviewWordIds: string[];
   deckScores: Record<string, { score: number; total: number; date: string }>;
 }
+

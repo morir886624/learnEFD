@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Source reference books (large PDFs)
+assets/book_src/

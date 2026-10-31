@@ -142,3 +142,4 @@ export const VOCABULARY_DECKS: VocabularyDeck[] = [
     iconName: 'GraduationCap',
   },
 ];
+

@@ -36,6 +36,7 @@ import {
   FrenchErrorHunterExercise,
   FrenchDiscriminationExercise,
 } from '../../types/frenchGrammar';
+import { FRENCH_GRAMMAR_LESSONS } from '../../data/frenchGrammar';
 import { SpeechService } from '../../services/speech';
 
 type ActiveTab = 'learn' | 'practice';
@@ -76,6 +77,12 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
   const [isFinished, setIsFinished] = useState(false);
 
   const isCompleted = grammarProgress.completedLessonIds.includes(lesson.id);
+  const currentLessonIdx = FRENCH_GRAMMAR_LESSONS.findIndex((l) => l.id === lesson.id);
+  const prevLesson = currentLessonIdx > 0 ? FRENCH_GRAMMAR_LESSONS[currentLessonIdx - 1] : null;
+  const nextLesson =
+    currentLessonIdx >= 0 && currentLessonIdx < FRENCH_GRAMMAR_LESSONS.length - 1
+      ? FRENCH_GRAMMAR_LESSONS[currentLessonIdx + 1]
+      : null;
 
   const speakFrench = (text: string) => {
     const clean = text.replace(/\([^)]*\)/g, '').replace(/___/g, '').trim();
@@ -115,11 +122,19 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
     await markGrammarLessonComplete(lesson.id);
   };
 
-  // Practice Engine Handlers
   const exercises = lesson.exercises;
   const currentExercise = exercises[currentIndex];
   const progressPercent =
     exercises.length > 0 ? Math.round((currentIndex / exercises.length) * 100) : 0;
+
+  const hasSelection =
+    !currentExercise
+      ? false
+      : currentExercise.type === 'multiple-choice' || currentExercise.type === 'discrimination'
+        ? selectedOption !== null
+        : currentExercise.type === 'sentence-scramble'
+          ? scrambleAnswer.length > 0
+          : selectedSegmentIdx !== null;
 
   const handleSelectMC = (option: string) => {
     if (isAnswerChecked) return;
@@ -1138,6 +1153,64 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
                 {isCompleted ? 'Leçon validée dans votre profil' : 'Marquer comme comprise'}
               </Text>
             </TouchableOpacity>
+
+            {/* Previous / Next French Unit Navigation + Vocabulary Link */}
+            <View style={styles.unitNavRow}>
+              <TouchableOpacity
+                disabled={!prevLesson}
+                onPress={() => prevLesson && router.replace(`/grammar/${prevLesson.id}`)}
+                style={[
+                  styles.unitNavBtn,
+                  {
+                    backgroundColor: themeColors.surface,
+                    borderColor: themeColors.cardBorder,
+                    opacity: prevLesson ? 1 : 0.4,
+                  },
+                ]}
+              >
+                <ArrowLeft size={16} color={themeColors.textPrimary} />
+                <Text
+                  numberOfLines={1}
+                  style={[styles.unitNavText, { color: themeColors.textPrimary }]}
+                >
+                  {prevLesson ? `Unité ${prevLesson.unitNumber}` : 'Début'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => router.push('/vocabulary' as any)}
+                style={[
+                  styles.unitNavBtn,
+                  { backgroundColor: '#ECFDF5', borderColor: '#6EE7B7' },
+                ]}
+              >
+                <Sparkles size={15} color="#059669" />
+                <Text style={[styles.unitNavText, { color: '#059669' }]}>
+                  Vocabulaire
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                disabled={!nextLesson}
+                onPress={() => nextLesson && router.replace(`/grammar/${nextLesson.id}`)}
+                style={[
+                  styles.unitNavBtn,
+                  {
+                    backgroundColor: themeColors.surface,
+                    borderColor: themeColors.cardBorder,
+                    opacity: nextLesson ? 1 : 0.4,
+                  },
+                ]}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={[styles.unitNavText, { color: themeColors.textPrimary }]}
+                >
+                  {nextLesson ? `Unité ${nextLesson.unitNumber}` : 'Fin'}
+                </Text>
+                <ArrowRight size={16} color={themeColors.textPrimary} />
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           /* TAB 2: INTERACTIVE FRENCH PRACTICE ENGINE */
@@ -1685,10 +1758,15 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
                   {!isAnswerChecked ? (
                     <TouchableOpacity
                       activeOpacity={0.85}
+                      disabled={!hasSelection}
                       onPress={handleCheckAnswer}
                       style={[
                         styles.practiceCtaButton,
-                        { backgroundColor: themeColors.primary },
+                        {
+                          backgroundColor: hasSelection
+                            ? themeColors.primary
+                            : themeColors.cardBorder,
+                        },
                       ]}
                     >
                       <Text style={styles.practiceCtaText}>Vérifier la réponse</Text>
@@ -2548,6 +2626,28 @@ const styles = StyleSheet.create({
   },
   scorePercent: {
     fontSize: 15,
+    fontWeight: '700',
+  },
+  unitNavRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    marginTop: 6,
+  },
+  unitNavBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  unitNavText: {
+    fontSize: 12.5,
     fontWeight: '700',
   },
 });

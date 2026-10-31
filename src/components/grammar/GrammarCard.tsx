@@ -10,6 +10,7 @@ interface GrammarCardProps {
   isCompleted?: boolean;
   scoreInfo?: { score: number; total: number };
   onPress: () => void;
+  language?: 'fr' | 'en';
 }
 
 export const GrammarCard: React.FC<GrammarCardProps> = ({
@@ -17,6 +18,7 @@ export const GrammarCard: React.FC<GrammarCardProps> = ({
   isCompleted,
   scoreInfo,
   onPress,
+  language = 'fr',
 }) => {
   const { themeColors } = useApp();
 
@@ -36,6 +38,13 @@ export const GrammarCard: React.FC<GrammarCardProps> = ({
   };
 
   const levelColor = getLevelColor(lesson.level);
+  const isEn = language === 'en';
+  const primaryTitle = isEn ? lesson.titleEn : lesson.titleFr;
+  const secondaryTitle = isEn ? lesson.titleFr : lesson.titleEn;
+  const summaryText =
+    isEn && 'summaryEn' in lesson && lesson.summaryEn
+      ? lesson.summaryEn
+      : lesson.summaryFr;
 
   return (
     <TouchableOpacity
@@ -82,10 +91,10 @@ export const GrammarCard: React.FC<GrammarCardProps> = ({
 
       {/* Lesson Title */}
       <Text style={[styles.titleFr, { color: themeColors.textPrimary }]}>
-        {lesson.titleFr}
+        {primaryTitle}
       </Text>
       <Text style={[styles.titleEn, { color: themeColors.textSecondary }]}>
-        {lesson.titleEn}
+        {secondaryTitle}
       </Text>
 
       {/* Dari Title if available */}
@@ -100,7 +109,7 @@ export const GrammarCard: React.FC<GrammarCardProps> = ({
         numberOfLines={2}
         style={[styles.summary, { color: themeColors.textSecondary }]}
       >
-        {lesson.summaryFr}
+        {summaryText}
       </Text>
 
       {/* Footer: Source book tag + Open arrow */}

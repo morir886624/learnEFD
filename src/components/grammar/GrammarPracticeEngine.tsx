@@ -50,6 +50,15 @@ export const GrammarPracticeEngine: React.FC<GrammarPracticeEngineProps> = ({
   const currentExercise = exercises[currentIndex];
   const progressPercent = Math.round(((currentIndex) / exercises.length) * 100);
 
+  const hasSelection =
+    !currentExercise
+      ? false
+      : currentExercise.type === 'multiple-choice' || currentExercise.type === 'discrimination'
+        ? selectedOption !== null
+        : currentExercise.type === 'sentence-scramble'
+          ? scrambleAnswer.length > 0
+          : selectedSegmentIdx !== null;
+
   // Check Multiple Choice
   const handleSelectMC = (option: string) => {
     if (isAnswerChecked) return;
@@ -615,8 +624,16 @@ export const GrammarPracticeEngine: React.FC<GrammarPracticeEngineProps> = ({
         {!isAnswerChecked ? (
           <TouchableOpacity
             activeOpacity={0.85}
+            disabled={!hasSelection}
             onPress={handleCheckAnswer}
-            style={[styles.checkButton, { backgroundColor: themeColors.primary }]}
+            style={[
+              styles.checkButton,
+              {
+                backgroundColor: hasSelection
+                  ? themeColors.primary
+                  : themeColors.cardBorder,
+              },
+            ]}
           >
             <Text style={styles.checkButtonText}>Vérifier la réponse</Text>
           </TouchableOpacity>

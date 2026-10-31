@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   Volume2,
@@ -26,11 +26,6 @@ export const VocabularyFlashcardView: React.FC<VocabularyFlashcardViewProps> = (
   const { themeColors, isDark, vocabularyProgress, markVocabularyWord } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-
-  useEffect(() => {
-    setCurrentIndex(0);
-    setIsFlipped(false);
-  }, [items]);
 
   if (items.length === 0) {
     return (
@@ -85,7 +80,7 @@ export const VocabularyFlashcardView: React.FC<VocabularyFlashcardViewProps> = (
     } catch {
       // ignore
     }
-    markVocabularyWord(currentItem.id, status);
+    markVocabularyWord(currentItem.id, status === 'mastered');
     if (currentIndex < items.length - 1) {
       setIsFlipped(false);
       setCurrentIndex((prev) => prev + 1);

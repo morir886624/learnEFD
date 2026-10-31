@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   CircleCheck,
@@ -35,15 +35,6 @@ export const VocabularyPracticeEngine: React.FC<VocabularyPracticeEngineProps> =
   const [isCorrect, setIsCorrect] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-
-  useEffect(() => {
-    setCurrentIndex(0);
-    setSelectedOption(null);
-    setIsChecked(false);
-    setIsCorrect(false);
-    setScore(0);
-    setIsFinished(false);
-  }, [deckId, exercises]);
 
   if (exercises.length === 0) {
     return (

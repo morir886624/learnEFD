@@ -44,9 +44,9 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
       // ignore
     }
     if (status === 'mastered') {
-      markVocabularyWord(item.id, isMastered ? 'none' : 'mastered');
+      markVocabularyWord(item.id, true);
     } else {
-      markVocabularyWord(item.id, isReview ? 'none' : 'review');
+      markVocabularyWord(item.id, false);
     }
   };
 

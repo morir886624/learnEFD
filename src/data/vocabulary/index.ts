@@ -60,3 +60,4 @@ export const getExercisesForCategory = (
   if (category === 'ALL') return VOCABULARY_EXERCISES;
   return VOCABULARY_EXERCISES.filter((ex) => ex.category === category);
 };
+
