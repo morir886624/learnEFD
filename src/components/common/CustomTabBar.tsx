@@ -11,8 +11,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Home,
   BookOpen,
-  Layers,
-  Award,
   Bookmark,
   Settings as SettingsIcon,
   GraduationCap,
@@ -31,9 +29,7 @@ const TAB_CONFIG: Record<
 > = {
   index: { label: 'Accueil', Icon: Home },
   'grammar/index': { label: 'Grammaire', Icon: GraduationCap },
-  'phrases/index': { label: 'Phrases', Icon: BookOpen },
-  'flashcards/index': { label: 'Flashcards', Icon: Layers },
-  'quiz/index': { label: 'Quiz', Icon: Award },
+  'phrases/index': { label: 'Pratique', Icon: BookOpen },
   'favorites/index': { label: 'Favoris', Icon: Bookmark },
   'settings/index': { label: 'Options', Icon: SettingsIcon },
 };

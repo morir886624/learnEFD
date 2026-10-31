@@ -1,219 +1,169 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  FlatList,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { BookOpen } from 'lucide-react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { BookOpen, Sparkles, CheckCircle2, Award } from 'lucide-react-native';
 import { useApp } from '../../context/AppContext';
 import { useResponsive } from '../../hooks/useResponsive';
 import { PHRASES } from '../../data/phrases';
-import { CATEGORIES } from '../../data/categories';
-import { CategoryId, Level, Phrase } from '../../types/phrase';
-import { SearchBar } from '../../components/common/SearchBar';
-import { PhraseCard } from '../../components/phrases/PhraseCard';
-import { MasterDetailView } from '../../components/tablet/MasterDetailView';
+import { ALL_FRENCH_VOCABULARY_ITEMS } from '../../data/frenchVocabulary';
+import { ALL_VOCABULARY_ITEMS } from '../../data/vocabulary';
+import { PracticeMode, ContentSource } from '../../components/practice/types';
+import { PracticeModeSwitcher } from '../../components/practice/PracticeModeSwitcher';
+import { PracticeContentSwitcher } from '../../components/practice/PracticeContentSwitcher';
+import { PhrasesExplorerView } from '../../components/practice/PhrasesExplorerView';
+import { PhrasesFlashcardsView } from '../../components/practice/PhrasesFlashcardsView';
+import { PhrasesQuizView } from '../../components/practice/PhrasesQuizView';
+import { FrenchVocabSection } from '../../components/practice/FrenchVocabSection';
+import { EnglishVocabSection } from '../../components/practice/EnglishVocabSection';
 
-export default function PhrasesScreen() {
-  const { themeColors } = useApp();
-  const { isTablet, contentMaxWidth } = useResponsive();
+export default function PracticeHubScreen() {
+  const { mode: initialMode, source: initialSource } = useLocalSearchParams<{
+    mode?: string;
+    source?: string;
+  }>();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState<Level | 'ALL'>('ALL');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all');
-  const [selectedPhrase, setSelectedPhrase] = useState<Phrase | null>(PHRASES[0]);
+  const { themeColors, stats, vocabularyProgress } = useApp();
+  const { contentMaxWidth } = useResponsive();
 
-  const filteredPhrases = useMemo(() => {
-    return PHRASES.filter((item) => {
-      // Level filter
-      if (selectedLevel !== 'ALL' && item.level !== selectedLevel) {
-        return false;
-      }
-      // Category filter
-      if (selectedCategory !== 'all' && item.category !== selectedCategory) {
-        return false;
-      }
-      // Search query
-      if (searchQuery.trim().length > 0) {
-        const q = searchQuery.toLowerCase().trim();
-        const matchFr = item.fr.toLowerCase().includes(q);
-        const matchEn = item.en.toLowerCase().includes(q);
-        const matchDari = item.dari.toLowerCase().includes(q);
-        const matchPhonetic = item.dariPhonetic.toLowerCase().includes(q);
-        return matchFr || matchEn || matchDari || matchPhonetic;
-      }
-      return true;
-    });
-  }, [searchQuery, selectedLevel, selectedCategory]);
+  // Active Mode (Explorer, Flashcards, Quiz)
+  const [activeMode, setActiveMode] = useState<PracticeMode>(
+    initialMode === 'flashcards' || initialMode === 'quiz' ? initialMode : 'explorer'
+  );
+
+  // Active Content Source (Phrases, Vocab FR, Vocab EN)
+  const [activeSource, setActiveSource] = useState<ContentSource>(
+    initialSource === 'vocab-fr' || initialSource === 'vocab-en' ? initialSource : 'phrases'
+  );
+
+  // Counts
+  const totalPhrases = PHRASES.length;
+  const masteredPhrases = stats.masteredPhraseIds?.length || 0;
+
+  const totalVocabFr = ALL_FRENCH_VOCABULARY_ITEMS.length;
+  const masteredVocabFr = ALL_FRENCH_VOCABULARY_ITEMS.filter((item) =>
+    vocabularyProgress.masteredWordIds?.includes(item.id)
+  ).length;
+
+  const totalVocabEn = ALL_VOCABULARY_ITEMS.length;
+  const masteredVocabEn = ALL_VOCABULARY_ITEMS.filter((item) =>
+    vocabularyProgress.masteredWordIds?.includes(item.id)
+  ).length;
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.background }]}>
-      <View
-        style={[
-          styles.container,
-          { maxWidth: isTablet ? '96%' : contentMaxWidth, alignSelf: 'center', width: '100%' },
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { maxWidth: contentMaxWidth, alignSelf: 'center', width: '100%' },
         ]}
+        showsVerticalScrollIndicator={false}
       >
         {/* HEADER */}
         <View style={styles.header}>
-          <View style={{ flex: 1 }}>
-            <Text style={[styles.title, { color: themeColors.textPrimary }]}>
-              Guide des Phrases Trilingues
-            </Text>
-            <Text style={[styles.subtitle, { color: themeColors.textSecondary }]}>
-              Français • English • دری (Dari)
-            </Text>
+          <View style={styles.titleRow}>
+            <View style={[styles.iconCircle, { backgroundColor: themeColors.primaryLight }]}>
+              <BookOpen size={24} color={themeColors.primary} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.screenTitle, { color: themeColors.textPrimary }]}>
+                Studio Pratique & Vocabulaire
+              </Text>
+              <Text style={[styles.screenSub, { color: themeColors.textSecondary }]}>
+                Phrases • Vocabulaire FR & EN • Flashcards 3D • Quiz
+              </Text>
+            </View>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => router.push('/reader')}
+
+          {/* QUICK STATS STRIP */}
+          <View
             style={[
-              styles.readerQuickBtn,
+              styles.statsStrip,
               {
-                backgroundColor: themeColors.primaryLight,
-                borderColor: themeColors.primary,
+                backgroundColor: themeColors.surface,
+                borderColor: themeColors.cardBorder,
               },
             ]}
           >
-            <BookOpen size={16} color={themeColors.primary} />
-            <Text style={[styles.readerQuickBtnText, { color: themeColors.primary }]}>
-              Mode Livre
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* SEARCH BAR */}
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Chercher : métro, travail, سلام..."
-        />
-
-        {/* LEVEL FILTERS */}
-        <View style={styles.filterContainer}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filterRow}
-          >
-            {(['ALL', 'A1', 'A2', 'B1'] as const).map((lvl) => {
-              const isSelected = selectedLevel === lvl;
-              return (
-                <TouchableOpacity
-                  key={lvl}
-                  onPress={() => setSelectedLevel(lvl)}
-                  activeOpacity={0.7}
-                  style={[
-                    styles.levelChip,
-                    {
-                      backgroundColor: isSelected
-                        ? themeColors.primary
-                        : themeColors.surface,
-                      borderColor: isSelected ? themeColors.primary : themeColors.cardBorder,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.levelChipText,
-                      { color: isSelected ? '#FFFFFF' : themeColors.textSecondary },
-                    ]}
-                  >
-                    {lvl === 'ALL' ? 'Tous les niveaux' : `Niveau ${lvl}`}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
-
-        {/* CATEGORY CHIPS */}
-        <View style={styles.categoriesContainer}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScroll}>
-            <TouchableOpacity
-              onPress={() => setSelectedCategory('all')}
-              style={[
-                styles.catPill,
-                {
-                  backgroundColor: selectedCategory === 'all' ? themeColors.primary : themeColors.surface,
-                  borderColor: selectedCategory === 'all' ? themeColors.primary : themeColors.cardBorder,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.catPillText,
-                  { color: selectedCategory === 'all' ? '#FFF' : themeColors.textPrimary },
-                ]}
-              >
-                ✨ Tous les thèmes
-              </Text>
-            </TouchableOpacity>
-
-            {CATEGORIES.map((cat) => {
-              const isSelected = selectedCategory === cat.id;
-              return (
-                <TouchableOpacity
-                  key={cat.id}
-                  onPress={() => setSelectedCategory(cat.id)}
-                  style={[
-                    styles.catPill,
-                    {
-                      backgroundColor: isSelected ? cat.color : themeColors.surface,
-                      borderColor: isSelected ? cat.color : themeColors.cardBorder,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.catPillText,
-                      { color: isSelected ? '#FFFFFF' : themeColors.textPrimary },
-                    ]}
-                  >
-                    {cat.labelFr}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
-
-        {/* RESULTS COUNT */}
-        <View style={styles.countRow}>
-          <Text style={[styles.countText, { color: themeColors.textMuted }]}>
-            {filteredPhrases.length} phrase(s) trouvée(s)
-          </Text>
-        </View>
-
-        {/* LIST / MASTER-DETAIL RENDER */}
-        {isTablet ? (
-          <MasterDetailView
-            phrases={filteredPhrases}
-            selectedPhrase={selectedPhrase}
-            onSelectPhrase={setSelectedPhrase}
-          />
-        ) : (
-          <FlatList
-            data={filteredPhrases}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <PhraseCard phrase={item} />}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
-            ListEmptyComponent={
-              <View style={styles.emptyBox}>
-                <Text style={[styles.emptyText, { color: themeColors.textSecondary }]}>
-                  Aucune phrase ne correspond à vos filtres.
+            <View style={styles.statItem}>
+              <View style={styles.statIconRow}>
+                <CheckCircle2 size={13} color={themeColors.primary} />
+                <Text style={[styles.statValue, { color: themeColors.textPrimary }]}>
+                  {masteredPhrases}/{totalPhrases}
                 </Text>
               </View>
-            }
+              <Text style={[styles.statLabel, { color: themeColors.textMuted }]}>
+                Phrases
+              </Text>
+            </View>
+
+            <View style={[styles.statDivider, { backgroundColor: themeColors.cardBorder }]} />
+
+            <View style={styles.statItem}>
+              <View style={styles.statIconRow}>
+                <Sparkles size={13} color={themeColors.frAccent} />
+                <Text style={[styles.statValue, { color: themeColors.textPrimary }]}>
+                  {masteredVocabFr}/{totalVocabFr}
+                </Text>
+              </View>
+              <Text style={[styles.statLabel, { color: themeColors.textMuted }]}>
+                Vocab FR
+              </Text>
+            </View>
+
+            <View style={[styles.statDivider, { backgroundColor: themeColors.cardBorder }]} />
+
+            <View style={styles.statItem}>
+              <View style={styles.statIconRow}>
+                <Award size={13} color={themeColors.enAccent} />
+                <Text style={[styles.statValue, { color: themeColors.textPrimary }]}>
+                  {masteredVocabEn}/{totalVocabEn}
+                </Text>
+              </View>
+              <Text style={[styles.statLabel, { color: themeColors.textMuted }]}>
+                Vocab EN
+              </Text>
+            </View>
+          </View>
+
+          {/* PRIMARY SWITCHER: 3 MASTER PARTS (EXPLORER, FLASHCARDS, QUIZ) */}
+          <PracticeModeSwitcher
+            activeMode={activeMode}
+            onChangeMode={setActiveMode}
           />
+
+          {/* SECONDARY SWITCHER: 3 CONTENT SOURCES (PHRASES, VOCAB FR, VOCAB EN) */}
+          <PracticeContentSwitcher
+            activeSource={activeSource}
+            onChangeSource={setActiveSource}
+            phrasesCount={totalPhrases}
+            vocabFrCount={totalVocabFr}
+            vocabEnCount={totalVocabEn}
+          />
+        </View>
+
+        {/* ACTIVE CONTENT VIEW */}
+        {activeSource === 'phrases' && (
+          <>
+            {activeMode === 'explorer' && <PhrasesExplorerView />}
+            {activeMode === 'flashcards' && <PhrasesFlashcardsView />}
+            {activeMode === 'quiz' && <PhrasesQuizView />}
+          </>
         )}
-      </View>
+
+        {activeSource === 'vocab-fr' && (
+          <FrenchVocabSection mode={activeMode} />
+        )}
+
+        {activeSource === 'vocab-en' && (
+          <EnglishVocabSection mode={activeMode} />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -222,93 +172,67 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  container: {
-    flex: 1,
+  scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 8,
+    paddingBottom: 40,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 8,
   },
-  readerQuickBtn: {
+  titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 12,
-    borderWidth: 1,
+    gap: 12,
+    marginBottom: 12,
   },
-  readerQuickBtnText: {
-    fontSize: 12,
-    fontWeight: '800',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '800',
-  },
-  subtitle: {
-    fontSize: 13,
-    fontWeight: '500',
-    marginTop: 2,
-  },
-  filterContainer: {
-    flexShrink: 0,
-    marginVertical: 4,
-  },
-  filterRow: {
-    flexDirection: 'row',
-    gap: 8,
-    paddingVertical: 2,
-  },
-  levelChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  levelChipText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  categoriesContainer: {
-    flexShrink: 0,
-    marginVertical: 4,
-  },
-  categoryScroll: {
-    gap: 8,
-    paddingVertical: 4,
-  },
-  catPill: {
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  catPillText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  countRow: {
-    marginVertical: 6,
-  },
-  countText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  listContent: {
-    paddingBottom: 24,
-  },
-  emptyBox: {
-    padding: 40,
+  iconCircle: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emptyText: {
-    fontSize: 15,
-    textAlign: 'center',
+  screenTitle: {
+    fontSize: 21,
+    fontWeight: '900',
+    letterSpacing: -0.3,
+  },
+  screenSub: {
+    fontSize: 12,
+    lineHeight: 16,
+    marginTop: 2,
+  },
+  statsStrip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+    marginBottom: 12,
+  },
+  statItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statIconRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  statValue: {
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  statLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginTop: 1,
+  },
+  statDivider: {
+    width: 1,
+    height: 24,
   },
 });

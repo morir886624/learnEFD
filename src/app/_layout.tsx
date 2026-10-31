@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Home, BookOpen, Layers, Award, Bookmark, Settings as SettingsIcon, GraduationCap } from 'lucide-react-native';
+import { Home, BookOpen, Bookmark, Settings as SettingsIcon, GraduationCap } from 'lucide-react-native';
 import { AppProvider, useApp } from '../context/AppContext';
 import { CustomTabBar } from '../components/common/CustomTabBar';
 
@@ -37,22 +37,20 @@ function TabLayout() {
         <Tabs.Screen
           name="phrases/index"
           options={{
-            title: 'Phrases',
+            title: 'Pratique',
             tabBarIcon: ({ color, size }) => <BookOpen size={size || 22} color={color} />,
           }}
         />
         <Tabs.Screen
           name="flashcards/index"
           options={{
-            title: 'Flashcards',
-            tabBarIcon: ({ color, size }) => <Layers size={size || 22} color={color} />,
+            href: null,
           }}
         />
         <Tabs.Screen
           name="quiz/index"
           options={{
-            title: 'Quiz',
-            tabBarIcon: ({ color, size }) => <Award size={size || 22} color={color} />,
+            href: null,
           }}
         />
         <Tabs.Screen

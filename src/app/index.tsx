@@ -313,7 +313,7 @@ export default function HomeScreen() {
           {/* Flashcards */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push('/flashcards')}
+            onPress={() => router.push({ pathname: '/phrases', params: { mode: 'flashcards' } } as any)}
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
@@ -331,7 +331,7 @@ export default function HomeScreen() {
           {/* Quiz */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push('/quiz')}
+            onPress={() => router.push({ pathname: '/phrases', params: { mode: 'quiz' } } as any)}
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },

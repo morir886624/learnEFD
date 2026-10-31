@@ -244,7 +244,12 @@ export const GrammarCourseOverview: React.FC<GrammarCourseOverviewProps> = ({
         /* ENGLISH COMPANION BANNER: VOCABULARY & PHRASAL VERBS */
         <TouchableOpacity
           activeOpacity={0.88}
-          onPress={() => router.push('/vocabulary' as any)}
+          onPress={() =>
+            router.push({
+              pathname: '/phrases',
+              params: { mode: 'explorer', source: 'vocab-en' },
+            } as any)
+          }
           style={[
             styles.companionBanner,
             {
