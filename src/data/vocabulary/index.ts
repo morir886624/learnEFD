@@ -9,15 +9,33 @@ import { VOCABULARY_DECKS } from './decks';
 import { PHRASAL_VERBS_AND_IRREGULARS } from './phrasalVerbsAndIrregulars';
 import { COLLOCATIONS_AND_IDIOMS } from './collocationsAndIdioms';
 import { LEXICAL_NUANCES_ITEMS } from './lexicalNuances';
+import { EN_A1_VOCABULARY } from './levels/a1';
+import { EN_A2_VOCABULARY } from './levels/a2';
+import { EN_B1_VOCABULARY } from './levels/b1';
+import { EN_B2_VOCABULARY } from './levels/b2';
 import { VOCABULARY_EXERCISES } from './exercises';
 
 export { VOCABULARY_DECKS, VOCABULARY_EXERCISES };
 
-export const ALL_VOCABULARY_ITEMS: VocabularyItem[] = [
+const RAW_VOCABULARY_ITEMS: VocabularyItem[] = [
   ...PHRASAL_VERBS_AND_IRREGULARS,
   ...COLLOCATIONS_AND_IDIOMS,
   ...LEXICAL_NUANCES_ITEMS,
+  ...EN_A1_VOCABULARY,
+  ...EN_A2_VOCABULARY,
+  ...EN_B1_VOCABULARY,
+  ...EN_B2_VOCABULARY,
 ];
+
+const seenEnKeys = new Set<string>();
+export const ALL_VOCABULARY_ITEMS: VocabularyItem[] = RAW_VOCABULARY_ITEMS.filter(
+  (item) => {
+    const key = `${item.level}:${item.wordEn.trim().toLowerCase()}`;
+    if (seenEnKeys.has(key)) return false;
+    seenEnKeys.add(key);
+    return true;
+  }
+);
 
 export const getVocabularyDeckById = (
   category: VocabularyCategory

@@ -17,12 +17,15 @@ interface EnglishVocabSectionProps {
   mode: PracticeMode;
 }
 
+const PAGE_SIZE = 25;
+
 export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }) => {
   const { themeColors } = useApp();
 
   const [selectedCategory, setSelectedCategory] = useState<VocabularyCategory | 'ALL'>('ALL');
   const [selectedLevel, setSelectedLevel] = useState<VocabularyLevel | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
 
   const activeDeck = useMemo(
     () => VOCABULARY_DECKS.find((d) => d.id === selectedCategory),
@@ -37,6 +40,20 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
     );
   }, [selectedCategory, selectedLevel, searchQuery]);
 
+  const levelCounts = useMemo(() => {
+    const allInCat = filterVocabularyItems(selectedCategory, 'ALL', searchQuery);
+    const counts: Record<string, number> = { ALL: allInCat.length, A1: 0, A2: 0, B1: 0, B2: 0 };
+    for (const item of allInCat) {
+      counts[item.level] = (counts[item.level] || 0) + 1;
+    }
+    return counts;
+  }, [selectedCategory, searchQuery]);
+
+  const visibleItems = useMemo(
+    () => filteredItems.slice(0, visibleCount),
+    [filteredItems, visibleCount]
+  );
+
   const exercises = useMemo(() => {
     const cat = selectedCategory === 'ALL' ? 'phrasal-verbs' : selectedCategory;
     return getExercisesForCategory(cat);
@@ -49,7 +66,10 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsTrack}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => setSelectedCategory('ALL')}
+            onPress={() => {
+              setSelectedCategory('ALL');
+              setVisibleCount(PAGE_SIZE);
+            }}
             style={[
               styles.deckChip,
               {
@@ -74,7 +94,10 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
               <TouchableOpacity
                 key={deck.id}
                 activeOpacity={0.8}
-                onPress={() => setSelectedCategory(deck.id)}
+                onPress={() => {
+                  setSelectedCategory(deck.id);
+                  setVisibleCount(PAGE_SIZE);
+                }}
                 style={[
                   styles.deckChip,
                   {
@@ -102,7 +125,10 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
         <View>
           <SearchBar
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={(txt) => {
+              setSearchQuery(txt);
+              setVisibleCount(PAGE_SIZE);
+            }}
             placeholder="Search English word, phrasal verb, French or دری..."
           />
 
@@ -113,7 +139,10 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
                 <TouchableOpacity
                   key={lvl}
                   activeOpacity={0.8}
-                  onPress={() => setSelectedLevel(lvl)}
+                  onPress={() => {
+                    setSelectedLevel(lvl);
+                    setVisibleCount(PAGE_SIZE);
+                  }}
                   style={[
                     styles.levelChip,
                     {
@@ -128,7 +157,7 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
                       { color: isSelected ? '#FFFFFF' : themeColors.textSecondary, fontWeight: isSelected ? '800' : '600' },
                     ]}
                   >
-                    {lvl === 'ALL' ? 'Tous Niveaux' : lvl}
+                    {lvl === 'ALL' ? `Tous (${levelCounts.ALL})` : `${lvl} (${levelCounts[lvl] || 0})`}
                   </Text>
                 </TouchableOpacity>
               );
@@ -138,12 +167,31 @@ export const EnglishVocabSection: React.FC<EnglishVocabSectionProps> = ({ mode }
           <View style={styles.resultsInfoRow}>
             <Text style={[styles.resultsCount, { color: themeColors.textMuted }]}>
               {filteredItems.length} {filteredItems.length === 1 ? 'word found' : 'words found'}
+              {filteredItems.length > visibleItems.length ? ` • Showing ${visibleItems.length}` : ''}
             </Text>
           </View>
 
-          {filteredItems.map((item) => (
+          {visibleItems.map((item) => (
             <VocabularyCard key={item.id} item={item} />
           ))}
+
+          {visibleCount < filteredItems.length && (
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+              style={[
+                styles.loadMoreBtn,
+                {
+                  backgroundColor: themeColors.surface,
+                  borderColor: themeColors.enAccent,
+                },
+              ]}
+            >
+              <Text style={[styles.loadMoreText, { color: themeColors.enAccent }]}>
+                Afficher plus ({Math.min(PAGE_SIZE, filteredItems.length - visibleCount)} suivants sur {filteredItems.length - visibleCount} restants)
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
 
@@ -214,5 +262,19 @@ const styles = StyleSheet.create({
   resultsCount: {
     fontSize: 12,
     fontWeight: '600',
+  },
+  loadMoreBtn: {
+    marginTop: 6,
+    marginBottom: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadMoreText: {
+    fontSize: 13,
+    fontWeight: '800',
   },
 });

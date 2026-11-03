@@ -2,6 +2,10 @@ import { FRENCH_VOCABULARY_DECKS } from './decks';
 import { DAILY_AND_LIVING_VOCABULARY } from './items/dailyAndLiving';
 import { TRAVEL_WORK_TECH_VOCABULARY } from './items/travelWorkTech';
 import { ADVANCED_AND_IDIOMS_VOCABULARY } from './items/advancedAndIdioms';
+import { FR_A1_VOCABULARY } from './levels/a1';
+import { FR_A2_VOCABULARY } from './levels/a2';
+import { FR_B1_VOCABULARY } from './levels/b1';
+import { FR_B2_VOCABULARY } from './levels/b2';
 import { FRENCH_VOCABULARY_EXERCISES } from './exercises';
 import {
   FrenchVocabularyCategory,
@@ -9,11 +13,24 @@ import {
   FrenchVocabularyLevel,
 } from '../../types/frenchVocabulary';
 
-export const ALL_FRENCH_VOCABULARY_ITEMS: FrenchVocabularyItem[] = [
+const RAW_FRENCH_VOCABULARY_ITEMS: FrenchVocabularyItem[] = [
   ...DAILY_AND_LIVING_VOCABULARY,
   ...TRAVEL_WORK_TECH_VOCABULARY,
   ...ADVANCED_AND_IDIOMS_VOCABULARY,
+  ...FR_A1_VOCABULARY,
+  ...FR_A2_VOCABULARY,
+  ...FR_B1_VOCABULARY,
+  ...FR_B2_VOCABULARY,
 ];
+
+const seenFrKeys = new Set<string>();
+export const ALL_FRENCH_VOCABULARY_ITEMS: FrenchVocabularyItem[] =
+  RAW_FRENCH_VOCABULARY_ITEMS.filter((item) => {
+    const key = `${item.level}:${item.wordFr.trim().toLowerCase()}`;
+    if (seenFrKeys.has(key)) return false;
+    seenFrKeys.add(key);
+    return true;
+  });
 
 export {
   FRENCH_VOCABULARY_DECKS,
