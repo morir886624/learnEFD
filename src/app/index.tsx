@@ -49,6 +49,7 @@ export default function HomeScreen() {
   const a1Count = PHRASES.filter((p) => p.level === 'A1').length;
   const a2Count = PHRASES.filter((p) => p.level === 'A2').length;
   const b1Count = PHRASES.filter((p) => p.level === 'B1').length;
+  const b2Count = PHRASES.filter((p) => p.level === 'B2').length;
   const masteredCount = stats.masteredPhraseIds.length;
   const progressPercent = Math.min(100, Math.round((masteredCount / totalCount) * 100));
 
@@ -121,7 +122,11 @@ export default function HomeScreen() {
             </View>
             <View style={[styles.levelStatBox, { backgroundColor: themeColors.surfaceSubtle }]}>
               <Text style={[styles.levelStatNum, { color: '#7E22CE' }]}>{b1Count}</Text>
-              <Text style={[styles.levelStatName, { color: themeColors.textSecondary }]}>B1 Intermédiaire</Text>
+              <Text style={[styles.levelStatName, { color: themeColors.textSecondary }]}>B1 Interm.</Text>
+            </View>
+            <View style={[styles.levelStatBox, { backgroundColor: themeColors.surfaceSubtle }]}>
+              <Text style={[styles.levelStatNum, { color: '#D97706' }]}>{b2Count}</Text>
+              <Text style={[styles.levelStatName, { color: themeColors.textSecondary }]}>B2 Avancé</Text>
             </View>
             <View style={[styles.levelStatBox, { backgroundColor: themeColors.surfaceSubtle }]}>
               <Text style={[styles.levelStatNum, { color: themeColors.accent }]}>{masteredCount}</Text>

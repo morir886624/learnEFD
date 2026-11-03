@@ -65,7 +65,7 @@ export const PhrasesFlashcardsView: React.FC = () => {
     <View style={styles.container}>
       {/* LEVEL CHIPS */}
       <View style={styles.filterRow}>
-        {(['ALL', 'A1', 'A2', 'B1'] as const).map((lvl) => {
+        {(['ALL', 'A1', 'A2', 'B1', 'B2'] as const).map((lvl) => {
           const isSelected = selectedLevel === lvl;
           return (
             <TouchableOpacity

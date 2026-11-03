@@ -34,6 +34,14 @@ export const LevelBadge: React.FC<BadgeProps> = ({ level, size = 'sm' }) => {
           border: isDark ? '#7E22CE' : '#D8B4FE',
           label: 'B1 Intermédiaire',
         };
+      case 'B2':
+      default:
+        return {
+          bg: isDark ? '#451A03' : '#FEF3C7',
+          text: isDark ? '#FBBF24' : '#B45309',
+          border: isDark ? '#D97706' : '#FCD34D',
+          label: 'B2 Avancé',
+        };
     }
   };
 
