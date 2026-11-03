@@ -17,10 +17,10 @@ export const PhrasesFlashcardsView: React.FC = () => {
     return PHRASES.filter((p) => selectedLevel === 'ALL' || p.level === selectedLevel);
   }, [selectedLevel]);
 
-  const currentPhrase = deck[currentIndex] || deck[0];
+  const currentPhrase = deck[currentIndex];
 
   const handleNext = () => {
-    if (currentIndex < deck.length - 1) {
+    if (currentIndex < deck.length) {
       setCurrentIndex((prev) => prev + 1);
     }
   };
@@ -59,7 +59,7 @@ export const PhrasesFlashcardsView: React.FC = () => {
     setCurrentIndex(0);
   };
 
-  const isCompleted = currentIndex >= deck.length;
+  const isCompleted = deck.length > 0 && currentIndex >= deck.length;
 
   return (
     <View style={styles.container}>
@@ -100,27 +100,38 @@ export const PhrasesFlashcardsView: React.FC = () => {
       </View>
 
       {/* PROGRESS TRACKER */}
-      <View style={styles.progressContainer}>
-        <Text style={[styles.progressText, { color: themeColors.textSecondary }]}>
-          Carte <Text style={{ fontWeight: '800', color: themeColors.textPrimary }}>{Math.min(currentIndex + 1, deck.length)}</Text> sur {deck.length}
-        </Text>
-        <View style={[styles.progressTrack, { backgroundColor: themeColors.surfaceSubtle }]}>
-          <View
-            style={[
-              styles.progressFill,
-              {
-                width: `${deck.length > 0 ? (Math.min(currentIndex + 1, deck.length) / deck.length) * 100 : 0}%`,
-                backgroundColor: themeColors.primary,
-              },
-            ]}
-          />
+      {deck.length > 0 && (
+        <View style={styles.progressContainer}>
+          <Text style={[styles.progressText, { color: themeColors.textSecondary }]}>
+            Carte <Text style={{ fontWeight: '800', color: themeColors.textPrimary }}>{Math.min(currentIndex + 1, deck.length)}</Text> sur {deck.length}
+          </Text>
+          <View style={[styles.progressTrack, { backgroundColor: themeColors.surfaceSubtle }]}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${(Math.min(currentIndex + 1, deck.length) / deck.length) * 100}%`,
+                  backgroundColor: themeColors.primary,
+                },
+              ]}
+            />
+          </View>
         </View>
-      </View>
+      )}
 
       {/* FLASHCARD OR FINISHED SCREEN */}
-      {isCompleted ? (
+      {deck.length === 0 ? (
         <View style={[styles.completedCard, { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder }]}>
-          <CheckCircle size={44} color="#16A34A" />
+          <Text style={[styles.completedTitle, { color: themeColors.textPrimary }]}>
+            Aucune phrase
+          </Text>
+          <Text style={[styles.completedSub, { color: themeColors.textSecondary }]}>
+            Aucune phrase trouvée pour ce niveau de sélection.
+          </Text>
+        </View>
+      ) : isCompleted ? (
+        <View style={[styles.completedCard, { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder }]}>
+          <CheckCircle size={48} color="#16A34A" />
           <Text style={[styles.completedTitle, { color: themeColors.textPrimary }]}>
             Félicitations !
           </Text>
@@ -140,6 +151,7 @@ export const PhrasesFlashcardsView: React.FC = () => {
         currentPhrase && (
           <View style={styles.cardWrapper}>
             <FlipCard
+              key={currentPhrase.id}
               phrase={currentPhrase}
               onMastered={handleMastered}
               onReview={handleReview}
@@ -150,21 +162,23 @@ export const PhrasesFlashcardsView: React.FC = () => {
               <TouchableOpacity
                 disabled={currentIndex === 0}
                 onPress={handlePrev}
+                activeOpacity={0.75}
                 style={[
                   styles.navBtn,
                   {
                     backgroundColor: themeColors.surface,
                     borderColor: themeColors.cardBorder,
-                    opacity: currentIndex === 0 ? 0.4 : 1,
+                    opacity: currentIndex === 0 ? 0.35 : 1,
                   },
                 ]}
               >
-                <ChevronLeft size={20} color={themeColors.textPrimary} />
+                <ChevronLeft size={18} color={themeColors.textPrimary} />
                 <Text style={[styles.navBtnText, { color: themeColors.textPrimary }]}>Précédente</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleNext}
+                activeOpacity={0.75}
                 style={[
                   styles.navBtn,
                   {
@@ -173,8 +187,10 @@ export const PhrasesFlashcardsView: React.FC = () => {
                   },
                 ]}
               >
-                <Text style={[styles.navBtnText, { color: themeColors.textPrimary }]}>Suivante</Text>
-                <ChevronRight size={20} color={themeColors.textPrimary} />
+                <Text style={[styles.navBtnText, { color: themeColors.textPrimary }]}>
+                  {currentIndex >= deck.length - 1 ? 'Terminer' : 'Suivante'}
+                </Text>
+                <ChevronRight size={18} color={themeColors.textPrimary} />
               </TouchableOpacity>
             </View>
           </View>
@@ -187,26 +203,33 @@ export const PhrasesFlashcardsView: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 24,
+    width: '100%',
   },
   filterRow: {
     flexDirection: 'row',
     gap: 8,
     marginBottom: 12,
+    maxWidth: 440,
+    alignSelf: 'center',
+    width: '100%',
   },
   levelChip: {
     paddingHorizontal: 13,
-    paddingVertical: 6,
+    paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
   },
   levelChipText: {
-    fontSize: 12,
+    fontSize: 12.5,
   },
   progressContainer: {
-    marginBottom: 14,
+    marginBottom: 12,
+    maxWidth: 440,
+    alignSelf: 'center',
+    width: '100%',
   },
   progressText: {
-    fontSize: 12,
+    fontSize: 12.5,
     marginBottom: 6,
   },
   progressTrack: {
@@ -226,7 +249,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 16,
+    maxWidth: 440,
+    marginTop: 8,
     gap: 12,
   },
   navBtn: {
@@ -240,35 +264,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   navBtnText: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontWeight: '700',
   },
   completedCard: {
-    borderRadius: 18,
+    borderRadius: 20,
     borderWidth: 1,
     padding: 32,
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 16,
+    maxWidth: 440,
+    alignSelf: 'center',
+    width: '100%',
   },
   completedTitle: {
-    fontSize: 20,
+    fontSize: 21,
     fontWeight: '900',
-    marginTop: 12,
-    marginBottom: 4,
+    marginTop: 14,
+    marginBottom: 6,
   },
   completedSub: {
-    fontSize: 13,
+    fontSize: 13.5,
     textAlign: 'center',
+    lineHeight: 20,
     marginBottom: 20,
   },
   restartBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingHorizontal: 22,
+    paddingVertical: 13,
+    borderRadius: 14,
   },
   restartBtnText: {
     color: '#FFFFFF',
@@ -276,4 +304,3 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
 });
-
