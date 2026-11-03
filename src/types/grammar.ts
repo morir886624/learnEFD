@@ -17,6 +17,7 @@ export interface GrammarFormula {
   negative: string;
   question: string;
   notes?: string;
+  notesEn?: string;
   notesFr?: string;
   notesDari?: string;
 }

@@ -5,6 +5,8 @@ import { ARCHITECTURE_AND_PAST_LESSONS } from './lessons/architectureAndPast';
 import { FUTURE_AND_MOODS_LESSONS } from './lessons/futureAndMoods';
 import { PRONOUNS_AND_DISCOURSE_LESSONS } from './lessons/pronounsAndDiscourse';
 import { MODIFIERS_AND_SOLVER_LESSONS } from './lessons/modifiersAndSolver';
+import { ADVANCED_SYNTAX_FRENCH_LESSONS } from './lessons/advancedSyntax';
+import { NUANCES_AND_IDIOMS_FRENCH_LESSONS } from './lessons/nuancesAndIdioms';
 import { FRENCH_VERB_TABLES } from './verbTables';
 
 export const FRENCH_GRAMMAR_LESSONS: FrenchGrammarLesson[] = [
@@ -13,6 +15,8 @@ export const FRENCH_GRAMMAR_LESSONS: FrenchGrammarLesson[] = [
   ...FUTURE_AND_MOODS_LESSONS,
   ...PRONOUNS_AND_DISCOURSE_LESSONS,
   ...MODIFIERS_AND_SOLVER_LESSONS,
+  ...ADVANCED_SYNTAX_FRENCH_LESSONS,
+  ...NUANCES_AND_IDIOMS_FRENCH_LESSONS,
 ];
 
 export { FRENCH_GRAMMAR_MODULES, FRENCH_VERB_TABLES };

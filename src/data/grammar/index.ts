@@ -9,6 +9,8 @@ import { NOUNS_ARTICLES_LESSONS } from './lessons/nounsArticles';
 import { ADJECTIVES_ADVERBS_LESSONS } from './lessons/adjectivesAdverbs';
 import { PREPOSITIONS_PHRASALS_LESSONS } from './lessons/prepositionsPhrasals';
 import { TROUBLESOME_LESSONS } from './lessons/troublesome';
+import { REPORTED_SPEECH_LESSONS } from './lessons/reportedSpeech';
+import { ADVANCED_SYNTAX_LESSONS } from './lessons/advancedSyntax';
 import { GrammarLesson, GrammarLevel, GrammarCategory } from '../../types/grammar';
 
 export { GRAMMAR_MODULES };
@@ -24,6 +26,8 @@ export const ALL_GRAMMAR_LESSONS: GrammarLesson[] = [
   ...ADJECTIVES_ADVERBS_LESSONS,
   ...PREPOSITIONS_PHRASALS_LESSONS,
   ...TROUBLESOME_LESSONS,
+  ...REPORTED_SPEECH_LESSONS,
+  ...ADVANCED_SYNTAX_LESSONS,
 ];
 
 export function getLessonById(id: string): GrammarLesson | undefined {

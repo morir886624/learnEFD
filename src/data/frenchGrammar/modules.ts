@@ -243,5 +243,53 @@ export const FRENCH_GRAMMAR_MODULES: FrenchGrammarModule[] = [
       'fr-lesson-idioms-connectors',
     ],
   },
+  {
+    id: 'fr-mod-advanced-discourse',
+    category: 'syntax-discourse',
+    order: 12,
+    titleFr: 'Syntaxe Avancée : Inversion, Subordonnées & Style Soutenu',
+    titleEn: 'Advanced Syntax: Inversion, Subordination & Formal Style',
+    titleDari: 'ترکیب پیشرفته جملات: وارونگی فاعل، جملات پیرو و سبک ادبی',
+    badge: 'Complete Grammar Units 18, 24 • Advanced Syntax',
+    descriptionFr:
+      'Approfondissez les nuances du français écrit et soutenu : concordance complexe au passé, inversion du sujet (Peut-être a-t-il compris), pronoms relatifs composés (auquel, duquel), participe présent vs gérondif, et connecteurs logiques de cause et conséquence.',
+    descriptionEn:
+      'Master advanced written French: past reported speech sequence, subject inversion, compound relatives (auquel, duquel), present participle vs gerund, and logical connectors.',
+    descriptionDari:
+      'تسلط بر ساختارهای پیشرفته زبان فرانسوی: نقل قول غیرمستقیم در زمان گذشته، وارونگی فاعل و فعل، ضمایر موصولی مرکب، تفاوت وجه وصفی و قید حالت، و حروف ربط علّی و معلولی.',
+    color: '#0D9488', // Teal
+    iconName: 'Share2',
+    lessonIds: [
+      'fr-lesson-indirect-speech-tenses',
+      'fr-lesson-inversion-mise-en-relief',
+      'fr-lesson-relative-pronouns-compounds',
+      'fr-lesson-participe-present-gerondif',
+      'fr-lesson-logical-connectors-cause-consequence',
+    ],
+  },
+  {
+    id: 'fr-mod-nuances-idioms',
+    category: 'prepositions-solver',
+    order: 13,
+    titleFr: 'Nuances Françaises : Concession, Faux-Amis & Registres',
+    titleEn: 'French Nuances: Concession, False Friends & Oral Registers',
+    titleDari: 'ظرافت‌های زبان فرانسوی: تضاد و تسلیم، لغات فریبنده و زبان کوچه بازاری',
+    badge: 'All-in-One Ch. 31 • Nuances & Fluency',
+    descriptionFr:
+      'Exprimez la concession avec élégance (bien que vs même si vs avoir beau), maîtrisez les négations complexes (ne... ni... ni sans article), les prépositions géographiques rares, les faux-amis traîtres (actuellement, assister) et le registre oral familier (omission du ne, verlan).',
+    descriptionEn:
+      'Master subtle French nuances: concession rules, multiple negation, tricky geographical prepositions, false friends, and everyday spoken French idioms and slang.',
+    descriptionDari:
+      'آشنایی با ظرافت‌های گفتاری و نگارشی فرانسوی: تفاوت bien que و même si، منفی‌های چندگانه، حروف اضافه کشورهای خاص، کلمات گمراه‌کننده انگلیسی-فرانسوی و زبان محاوره‌ای روزمره.',
+    color: '#8B5CF6', // Purple/Violet
+    iconName: 'Zap',
+    lessonIds: [
+      'fr-lesson-concession-opposition',
+      'fr-lesson-negation-complexe',
+      'fr-lesson-prepositions-geographiques-avancees',
+      'fr-lesson-faux-amis-anglais-francais',
+      'fr-lesson-registres-langue-oral',
+    ],
+  },
 ];
 

@@ -80,8 +80,8 @@ export const GrammarCourseOverview: React.FC<GrammarCourseOverviewProps> = ({
             </Text>
             <Text style={[styles.courseSub, { color: themeColors.textMuted }]}>
               {isFr
-                ? '33 Unités pédagogiques • Français, Anglais & دری'
-                : '33 Unités essentielles • English, Français & دری'}
+                ? `${totalCount} Unités pédagogiques • Français, Anglais & دری`
+                : `${totalCount} Unités essentielles • English, Français & دری`}
             </Text>
           </View>
           <View style={styles.percentBlock}>
@@ -201,7 +201,7 @@ export const GrammarCourseOverview: React.FC<GrammarCourseOverviewProps> = ({
                 },
               ]}
             >
-              Programme des 33 Unités
+              Programme des {totalCount} Unités
             </Text>
           </TouchableOpacity>
 

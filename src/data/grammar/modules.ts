@@ -193,5 +193,49 @@ export const GRAMMAR_MODULES: GrammarModule[] = [
     iconName: 'Flame',
     lessonIds: ['lesson-raise-rise-lay-lie', 'lesson-during-while-for-like-as'],
   },
+  {
+    id: 'mod-discourse-reported',
+    category: 'clauses',
+    order: 13,
+    titleEn: 'Reported Speech & Discourse',
+    titleFr: 'Discours Indirect, Question Tags & Subjonctif',
+    titleDari: 'نقل قول غیرمستقیم، پرسش‌های ضمیمه‌ای و گذشته غیرواقعی',
+    badge: 'Murphy Units 47–52 • Azar Ch 12, 20',
+    descriptionFr:
+      'Maîtrisez le discours indirect (déclarations, questions et ordres), les question tags (aren’t I, neither do I) et le passé irréel (it’s time you did, would rather).',
+    descriptionDari:
+      'آموزش کامل نقل قول غیرمستقیم جملات خبری و سوالی، تگ کوئسشن‌ها (aren’t I, neither do I) و گذشته غیرواقعی با it’s time و would rather.',
+    color: '#6366F1', // Indigo
+    iconName: 'MessageSquare',
+    lessonIds: [
+      'lesson-reported-speech-statements',
+      'lesson-reported-speech-questions-commands',
+      'lesson-question-tags-short-answers',
+      'lesson-unreal-past-subjunctive',
+    ],
+  },
+  {
+    id: 'mod-advanced-syntax',
+    category: 'troublesome',
+    order: 14,
+    titleEn: 'Advanced Syntax, Participles & Connectors',
+    titleFr: 'Syntaxe Avancée, Participes & Connecteurs',
+    titleDari: 'ساختار پیشرفته، بندهای وصفی، حروف تعریف و حروف ربط',
+    badge: 'Murphy Units 68, 72–91, 110, 114–120 • Azar Ch 7, 11, 13, 19',
+    descriptionFr:
+      'Inversion avec adverbes négatifs (Never have I), propositions participiales (-ing, having done), quantifieurs (each, every, neither), articles géographiques, connecteurs de but et collocations make/do.',
+    descriptionDari:
+      'وارونگی تاکیدی با قیدهای منفی، بندهای وصفی با -ing و having done، حروف تعریف اسامی جغرافیایی، کلمات کمیت و اصطلاحات make و do.',
+    color: '#0891B2', // Cyan
+    iconName: 'Sparkles',
+    lessonIds: [
+      'lesson-inversion-negative-adverbials',
+      'lesson-participle-clauses',
+      'lesson-determiners-each-every-both-neither',
+      'lesson-advanced-articles-places',
+      'lesson-connectors-purpose-result',
+      'lesson-say-tell-speak-talk-make-do',
+    ],
+  },
 ];
 

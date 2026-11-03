@@ -23,6 +23,7 @@ import { useApp } from '../context/AppContext';
 import { useResponsive } from '../hooks/useResponsive';
 import { PHRASES } from '../data/phrases';
 import { ALL_GRAMMAR_LESSONS } from '../data/grammar';
+import { FRENCH_GRAMMAR_LESSONS, FRENCH_GRAMMAR_MODULES } from '../data/frenchGrammar';
 import { ALL_VOCABULARY_ITEMS, VOCABULARY_DECKS } from '../data/vocabulary';
 import {
   ALL_FRENCH_VOCABULARY_ITEMS,
@@ -162,7 +163,7 @@ export default function HomeScreen() {
             Complete French All-in-One & Complete French Grammar
           </Text>
           <Text style={[styles.bookHeroDesc, { color: themeColors.textSecondary }]}>
-            11 modules, 33 unités interactives (A1–B2), conjugueur 19 verbes sur 7 temps/modes, prononciation audio française et exercices corrigés.
+            {FRENCH_GRAMMAR_MODULES.length} modules, {FRENCH_GRAMMAR_LESSONS.length} unités interactives (A1–B2), conjugueur 19 verbes sur 7 temps/modes, prononciation audio française et exercices corrigés.
           </Text>
 
           <View style={styles.bookHeroBottomRow}>
@@ -171,7 +172,7 @@ export default function HomeScreen() {
               <ArrowRight size={16} color="#FFFFFF" />
             </View>
             <Text style={[styles.bookCountNote, { color: themeColors.textMuted }]}>
-              {grammarProgress.completedLessonIds.length} / {33 + ALL_GRAMMAR_LESSONS.length} unités maîtrisées
+              {grammarProgress.completedLessonIds.length} / {FRENCH_GRAMMAR_LESSONS.length + ALL_GRAMMAR_LESSONS.length} unités maîtrisées
             </Text>
           </View>
         </TouchableOpacity>
@@ -293,7 +294,7 @@ export default function HomeScreen() {
             </View>
             <Text style={[styles.tileTitle, { color: themeColors.textPrimary }]}>Grammaire FR & EN</Text>
             <Text style={[styles.tileDesc, { color: themeColors.textSecondary }]}>
-              33 unités FR Heminway + {ALL_GRAMMAR_LESSONS.length} unités EN Murphy & Azar
+              {FRENCH_GRAMMAR_LESSONS.length} unités FR Heminway + {ALL_GRAMMAR_LESSONS.length} unités EN Murphy & Azar
             </Text>
           </TouchableOpacity>
 
