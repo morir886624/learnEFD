@@ -40,12 +40,25 @@ export default function GrammarLessonScreen() {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('learn');
   const [langDisplay, setLangDisplay] = useState<LangDisplay>('both');
+  const [prevId, setPrevId] = useState(id);
+  if (id !== prevId) {
+    setPrevId(id);
+    setActiveTab('learn');
+  }
+
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/grammar');
+    }
+  };
 
   const frenchLesson = getFrenchLessonById(id || '');
   const lesson = getLessonById(id || '');
 
   if (frenchLesson) {
-    return <FrenchLessonView lesson={frenchLesson} />;
+    return <FrenchLessonView key={frenchLesson.id} lesson={frenchLesson} />;
   }
 
   if (!lesson) {
@@ -56,7 +69,7 @@ export default function GrammarLessonScreen() {
             Leçon introuvable
           </Text>
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={handleBack}
             style={[styles.backHomeBtn, { backgroundColor: themeColors.primary }]}
           >
             <Text style={styles.backHomeText}>Retour à la liste</Text>
@@ -124,7 +137,7 @@ export default function GrammarLessonScreen() {
       >
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => router.back()}
+          onPress={handleBack}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           style={styles.backBtn}
         >
@@ -577,7 +590,12 @@ export default function GrammarLessonScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => router.push('/vocabulary' as any)}
+                onPress={() =>
+                  router.push({
+                    pathname: '/phrases',
+                    params: { mode: 'explorer', source: 'vocab-en' },
+                  })
+                }
                 style={[
                   styles.unitNavBtn,
                   { backgroundColor: '#ECFDF5', borderColor: '#6EE7B7' },
@@ -615,6 +633,7 @@ export default function GrammarLessonScreen() {
           /* TAB 2: INTERACTIVE PRACTICE DRILLS */
           <View style={styles.practiceSection}>
             <GrammarPracticeEngine
+              key={lesson.id}
               lessonId={lesson.id}
               lessonTitle={lesson.titleFr}
               exercises={lesson.exercises}

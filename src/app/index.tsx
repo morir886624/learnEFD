@@ -132,7 +132,7 @@ export default function HomeScreen() {
         {/* HERO GRAMMAR CARD (COMPLETE FRENCH GRAMMAR & ALL-IN-ONE) */}
         <TouchableOpacity
           activeOpacity={0.88}
-          onPress={() => router.push('/grammar')}
+          onPress={() => router.push({ pathname: '/grammar', params: { lang: 'fr' } })}
           style={[
             styles.bookHeroCard,
             {
@@ -179,7 +179,12 @@ export default function HomeScreen() {
         {/* HERO VOCABULARY & PHRASAL VERBS CARD (MURPHY & AZAR) */}
         <TouchableOpacity
           activeOpacity={0.88}
-          onPress={() => router.push('/vocabulary' as any)}
+          onPress={() =>
+            router.push({
+              pathname: '/phrases',
+              params: { mode: 'explorer', source: 'vocab-fr' },
+            })
+          }
           style={[
             styles.bookHeroCard,
             {
@@ -295,7 +300,12 @@ export default function HomeScreen() {
           {/* Studio Vocabulaire */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push('/vocabulary' as any)}
+            onPress={() =>
+              router.push({
+                pathname: '/phrases',
+                params: { mode: 'explorer', source: 'vocab-fr' },
+              })
+            }
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
@@ -313,7 +323,12 @@ export default function HomeScreen() {
           {/* Flashcards */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push({ pathname: '/phrases', params: { mode: 'flashcards' } } as any)}
+            onPress={() =>
+              router.push({
+                pathname: '/phrases',
+                params: { mode: 'flashcards', source: 'phrases' },
+              })
+            }
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
@@ -331,7 +346,12 @@ export default function HomeScreen() {
           {/* Quiz */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push({ pathname: '/phrases', params: { mode: 'quiz' } } as any)}
+            onPress={() =>
+              router.push({
+                pathname: '/phrases',
+                params: { mode: 'quiz', source: 'phrases' },
+              })
+            }
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },
@@ -349,7 +369,12 @@ export default function HomeScreen() {
           {/* Phrases / Explorer */}
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => router.push('/phrases')}
+            onPress={() =>
+              router.push({
+                pathname: '/phrases',
+                params: { mode: 'explorer', source: 'phrases' },
+              })
+            }
             style={[
               styles.tile,
               { backgroundColor: themeColors.surface, borderColor: themeColors.cardBorder },

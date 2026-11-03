@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { GraduationCap, SearchX } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useApp } from '../../context/AppContext';
@@ -27,11 +27,21 @@ import { GrammarFilterToolbar } from '../../components/grammar/hub/GrammarFilter
 import { GrammarModuleAccordion } from '../../components/grammar/hub/GrammarModuleAccordion';
 
 export default function GrammarIndexScreen() {
+  const { lang: initialLang } = useLocalSearchParams<{ lang?: string }>();
   const { themeColors, grammarProgress } = useApp();
   const { contentMaxWidth } = useResponsive();
 
   // Primary active language: French or English
-  const [activeLanguage, setActiveLanguage] = useState<GrammarLanguage>('fr');
+  const [activeLanguage, setActiveLanguage] = useState<GrammarLanguage>(
+    initialLang === 'en' ? 'en' : 'fr'
+  );
+  const [prevLangParam, setPrevLangParam] = useState(initialLang);
+  if (initialLang !== prevLangParam) {
+    setPrevLangParam(initialLang);
+    if (initialLang === 'fr' || initialLang === 'en') {
+      setActiveLanguage(initialLang);
+    }
+  }
 
   // French sub-tab: Lessons curriculum or Verb conjugator studio
   const [frenchSubTab, setFrenchSubTab] = useState<FrenchSubTab>('lessons');

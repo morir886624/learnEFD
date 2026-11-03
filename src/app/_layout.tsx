@@ -13,6 +13,7 @@ function TabLayout() {
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Tabs
+        backBehavior="history"
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
@@ -42,18 +43,6 @@ function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="flashcards/index"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="quiz/index"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
           name="favorites/index"
           options={{
             title: 'Favoris',
@@ -67,24 +56,11 @@ function TabLayout() {
             tabBarIcon: ({ color, size }) => <SettingsIcon size={size || 22} color={color} />,
           }}
         />
-        <Tabs.Screen
-          name="grammar/[id]"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="vocabulary/index"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="reader/index"
-          options={{
-            href: null,
-          }}
-        />
+        <Tabs.Screen name="flashcards/index" />
+        <Tabs.Screen name="quiz/index" />
+        <Tabs.Screen name="grammar/[id]" />
+        <Tabs.Screen name="vocabulary/index" />
+        <Tabs.Screen name="reader/index" />
       </Tabs>
     </>
   );

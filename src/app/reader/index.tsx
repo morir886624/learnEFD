@@ -157,7 +157,7 @@ export default function BookReaderScreen() {
         ]}
       >
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
           style={styles.iconBtn}
           accessibilityLabel="Retour"
         >

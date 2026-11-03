@@ -264,7 +264,7 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
       >
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => router.back()}
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/grammar'))}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           style={styles.backBtn}
         >
@@ -1178,7 +1178,12 @@ export const FrenchLessonView: React.FC<FrenchLessonViewProps> = ({ lesson }) =>
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => router.push('/vocabulary' as any)}
+                onPress={() =>
+                  router.push({
+                    pathname: '/phrases',
+                    params: { mode: 'explorer', source: 'vocab-fr' },
+                  })
+                }
                 style={[
                   styles.unitNavBtn,
                   { backgroundColor: '#ECFDF5', borderColor: '#6EE7B7' },

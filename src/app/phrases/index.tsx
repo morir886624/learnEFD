@@ -35,11 +35,33 @@ export default function PracticeHubScreen() {
   const [activeMode, setActiveMode] = useState<PracticeMode>(
     initialMode === 'flashcards' || initialMode === 'quiz' ? initialMode : 'explorer'
   );
+  const [prevModeParam, setPrevModeParam] = useState(initialMode);
+  if (initialMode !== prevModeParam) {
+    setPrevModeParam(initialMode);
+    if (
+      initialMode === 'explorer' ||
+      initialMode === 'flashcards' ||
+      initialMode === 'quiz'
+    ) {
+      setActiveMode(initialMode);
+    }
+  }
 
   // Active Content Source (Phrases, Vocab FR, Vocab EN)
   const [activeSource, setActiveSource] = useState<ContentSource>(
     initialSource === 'vocab-fr' || initialSource === 'vocab-en' ? initialSource : 'phrases'
   );
+  const [prevSourceParam, setPrevSourceParam] = useState(initialSource);
+  if (initialSource !== prevSourceParam) {
+    setPrevSourceParam(initialSource);
+    if (
+      initialSource === 'phrases' ||
+      initialSource === 'vocab-fr' ||
+      initialSource === 'vocab-en'
+    ) {
+      setActiveSource(initialSource);
+    }
+  }
 
   // Counts
   const totalPhrases = PHRASES.length;
